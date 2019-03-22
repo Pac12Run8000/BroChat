@@ -8,20 +8,24 @@
 
 /* Begin PBXBuildFile section */
 		09403DBE22452E1E000ADA51 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09403DBD22452E1E000ADA51 /* AppDelegate.swift */; };
-		09403DC022452E1E000ADA51 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09403DBF22452E1E000ADA51 /* ViewController.swift */; };
 		09403DC322452E1E000ADA51 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 09403DC122452E1E000ADA51 /* Main.storyboard */; };
 		09403DC522452E20000ADA51 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 09403DC422452E20000ADA51 /* Assets.xcassets */; };
 		09403DC822452E20000ADA51 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 09403DC622452E20000ADA51 /* LaunchScreen.storyboard */; };
+		09403DD122453ABC000ADA51 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09403DD022453ABC000ADA51 /* ViewController.swift */; };
+		09403DD322453C04000ADA51 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09403DD222453C04000ADA51 /* LoginController.swift */; };
+		09403DD622453CB1000ADA51 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09403DD522453CB1000ADA51 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		09403DBA22452E1E000ADA51 /* BroChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BroChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		09403DBD22452E1E000ADA51 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		09403DBF22452E1E000ADA51 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		09403DC222452E1E000ADA51 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		09403DC422452E20000ADA51 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		09403DC722452E20000ADA51 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		09403DC922452E20000ADA51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		09403DD022453ABC000ADA51 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		09403DD222453C04000ADA51 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
+		09403DD522453CB1000ADA51 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,14 +58,32 @@
 		09403DBC22452E1E000ADA51 /* BroChat */ = {
 			isa = PBXGroup;
 			children = (
+				09403DD422453C92000ADA51 /* Extensions */,
+				09403DCF22453A73000ADA51 /* Controllers */,
 				09403DBD22452E1E000ADA51 /* AppDelegate.swift */,
-				09403DBF22452E1E000ADA51 /* ViewController.swift */,
 				09403DC122452E1E000ADA51 /* Main.storyboard */,
 				09403DC422452E20000ADA51 /* Assets.xcassets */,
 				09403DC622452E20000ADA51 /* LaunchScreen.storyboard */,
 				09403DC922452E20000ADA51 /* Info.plist */,
 			);
 			path = BroChat;
+			sourceTree = "<group>";
+		};
+		09403DCF22453A73000ADA51 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				09403DD022453ABC000ADA51 /* ViewController.swift */,
+				09403DD222453C04000ADA51 /* LoginController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		09403DD422453C92000ADA51 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				09403DD522453CB1000ADA51 /* Extensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -135,8 +157,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				09403DC022452E1E000ADA51 /* ViewController.swift in Sources */,
+				09403DD122453ABC000ADA51 /* ViewController.swift in Sources */,
+				09403DD322453C04000ADA51 /* LoginController.swift in Sources */,
 				09403DBE22452E1E000ADA51 /* AppDelegate.swift in Sources */,
+				09403DD622453CB1000ADA51 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,7 +316,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = GroverTech.BroChat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -310,7 +334,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = GroverTech.BroChat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
