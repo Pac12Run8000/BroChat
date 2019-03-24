@@ -34,8 +34,8 @@ extension ViewController {
     
     private func setupNavbar() {
         navigationController?.navigationBar.barTintColor = UIColor.darkPinkish
-        navigationController?.navigationBar.tintColor = UIColor.customDarkBlue
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor:UIColor.customDarkBlue]
+        navigationController?.navigationBar.tintColor = UIColor.lightBlue1
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor:UIColor.lightBlue1]
     }
     
     private func backgroundAttributes() {

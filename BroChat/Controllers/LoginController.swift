@@ -51,7 +51,7 @@ extension LoginController {
     
     private func setimageView() {
         imageView.layer.borderColor = UIColor.customDarkBlue.cgColor
-        imageView.layer.borderWidth = 4
+        imageView.layer.borderWidth = 1
         imageView.layer.cornerRadius = 10
         imageView.layer.masksToBounds = true
     }
@@ -92,8 +92,24 @@ extension LoginController {
 extension LoginController:UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        if IsLoginElse(input: segmentOutlet.selectedSegmentIndex) {
+            print("Logging in")
+        } else {
+            print("Registering")
+        }
+        
         self.dismiss(animated: true, completion: nil)
         return true
+    }
+}
+
+
+// MARK:- Logic that marks whether Login or Register
+extension LoginController {
+    
+    private func IsLoginElse(input:Int) -> Bool {
+        return input == 0 ? true : false
     }
 }
 
