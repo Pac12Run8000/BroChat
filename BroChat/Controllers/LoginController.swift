@@ -111,26 +111,42 @@ extension LoginController:UITextFieldDelegate {
             
         } else {
             print("Registering")
-
-
-            if let email = emailOutlet.text, let password = passwordOutlet.text, let username = usernameOutlet.text {
+            
+            registerIntoFirebase(username: usernameOutlet.text, emailAddress: emailOutlet.text, password: passwordOutlet.text!) { (success, error, name) in
                 
-                Auth.auth().createUser(withEmail: email, password: password) { (result, error) in
-                    
-                    
-                    guard error == nil else {
-                        print("error:\(error?.localizedDescription)")
-                        return
-                    }
+                if (success!) {
+                    self.dismiss(animated: true, completion: nil)
                 }
+                
             }
-            
-            
         }
-        
-        self.dismiss(animated: true, completion: nil)
         return true
     }
+}
+
+
+
+// MARK:- Firebase Registration functionality and Login funtionality
+extension LoginController {
+    
+    private func registerIntoFirebase(username:String?, emailAddress:String?, password:String, completionHandler:@escaping(_ succeed:Bool?,_ error:Error?,_ username:String?) -> ()) {
+        
+        if let email = emailAddress, let password = password as? String, let username = username as? String {
+            
+            Auth.auth().createUser(withEmail: email, password: password) { (result, error) in
+                guard error == nil else {
+                    print("Error:\(String(describing: error?.localizedDescription))")
+                    completionHandler(false, error, username)
+                    return
+                }
+                completionHandler(true, nil, username)
+            }
+        }
+    }
+    
+    
+    
+    
 }
 
 
