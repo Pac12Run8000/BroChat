@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import FirebaseAuth
+import Firebase
 
 class LoginController: UIViewController {
     
@@ -29,6 +31,8 @@ class LoginController: UIViewController {
         passwordOutlet.delegate = self
         emailOutlet.delegate = self
         usernameOutlet.delegate = self
+        
+        
         
         
     }
@@ -95,8 +99,33 @@ extension LoginController:UITextFieldDelegate {
         
         if IsLoginElse(input: segmentOutlet.selectedSegmentIndex) {
             print("Logging in")
+            
+
+            if let email = emailOutlet.text, let password = passwordOutlet.text {
+                
+                Auth.auth().signIn(withEmail: email, password: password) { (result, error) in
+                    
+                }
+            }
+            
+            
         } else {
             print("Registering")
+
+
+            if let email = emailOutlet.text, let password = passwordOutlet.text, let username = usernameOutlet.text {
+                
+                Auth.auth().createUser(withEmail: email, password: password) { (result, error) in
+                    
+                    
+                    guard error == nil else {
+                        print("error:\(error?.localizedDescription)")
+                        return
+                    }
+                }
+            }
+            
+            
         }
         
         self.dismiss(animated: true, completion: nil)
@@ -110,6 +139,35 @@ extension LoginController {
     
     private func IsLoginElse(input:Int) -> Bool {
         return input == 0 ? true : false
+    }
+    
+    //function to check if an email is valid or not. returns true if email is valid, false if email is invalid
+     func isValidEmailAddress(emailAddressString: String) -> Bool {
+        var returnValue = true
+        
+        //regular expresion to define the format for email.
+        let emailRegEx = "[A-Z0-9a-z.-_]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,3}"
+        
+        do {
+            let regex = try NSRegularExpression(pattern: emailRegEx)
+            let nsString = emailAddressString as NSString
+            
+            //compare the entered email by the defined format of email.
+            let results = regex.matches(in: emailAddressString, range: NSRange(location: 0, length: nsString.length))
+            
+            //if format is wrong, then return false
+            if results.count == 0
+            {
+                returnValue = false
+            }
+            
+        } catch let error as NSError {
+            //error while matching the format & email.
+            print("invalid regex: \(error.localizedDescription)")
+            returnValue = false
+        }
+        
+        return  returnValue
     }
 }
 
