@@ -28,17 +28,13 @@ class LoginController: UIViewController {
         setFieldsOnUI(segmentedIndex: segmentOutlet.selectedSegmentIndex)
         setviews()
         setimageView()
+        setupErrorLabel()
         
         passwordOutlet.delegate = self
         emailOutlet.delegate = self
         usernameOutlet.delegate = self
         
-        errorLabelOutlet.layer.masksToBounds = true
-        errorLabelOutlet.layer.borderWidth = 5
-        errorLabelOutlet.layer.borderColor = UIColor.customDarkBlue.cgColor
-        errorLabelOutlet.textColor = UIColor.customDarkBlue
-        errorLabelOutlet.layer.cornerRadius = 8
-        errorLabelOutlet.alpha = 0.0
+        
         
         
         
@@ -61,6 +57,16 @@ class LoginController: UIViewController {
 }
 // MARK:- UI Layout
 extension LoginController {
+    
+    
+    private func setupErrorLabel() {
+        errorLabelOutlet.layer.masksToBounds = true
+        errorLabelOutlet.layer.borderWidth = 5
+        errorLabelOutlet.layer.borderColor = UIColor.customDarkBlue.cgColor
+        errorLabelOutlet.textColor = UIColor.customDarkBlue
+        errorLabelOutlet.layer.cornerRadius = 8
+        errorLabelOutlet.alpha = 0.0
+    }
     
     private func setimageView() {
         imageView.layer.borderColor = UIColor.customDarkBlue.cgColor
@@ -108,24 +114,18 @@ extension LoginController:UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
-        if (segmentOutlet.selectedSegmentIndex == LoginState.Login.rawValue) {
-            
-            
+        switch segmentOutlet.selectedSegmentIndex {
+        case LoginState.Login.rawValue:
             print("Logging in")
-            
-            LoginToFirebase(emailOutletText: emailOutlet, passwordOutletText: passwordOutlet)
-           
-                
-            
-            
-            
-            
-        } else {
+            self.loginToFirebase(emailOutletText: emailOutlet, passwordOutletText: passwordOutlet)
+        case LoginState.Register.rawValue:
             print("Registering")
-            
-           self.sanityCheckingWithRegistrationIntoFirebase(usernameField: usernameOutlet, emailField: emailOutlet, passwordField: passwordOutlet)
-            
+            self.sanityCheckingWithRegistrationIntoFirebase(usernameField: usernameOutlet, emailField: emailOutlet, passwordField: passwordOutlet)
+        default:
+            print("do nothing")
         }
+        
+
         return true
     }
 }
@@ -135,10 +135,10 @@ extension LoginController:UITextFieldDelegate {
 // MARK:- Firebase Registration functionality and Login funtionality
 extension LoginController {
     
-    private func LoginToFirebase(emailOutletText:UITextField, passwordOutletText:UITextField) {
-        guard let email = emailOutletText.text else {
-            print("There is no email address.")
-            self.displayLabelForErrors(label: self.errorLabelOutlet, msg: "There is no email address.")
+    private func loginToFirebase(emailOutletText:UITextField, passwordOutletText:UITextField) {
+        guard let email = emailOutletText.text, isValidEmailAddress(testStr: email) else {
+            print("Email is not valid")
+            self.displayLabelForErrors(label: self.errorLabelOutlet, msg: "Email is not valid")
             return
         }
         
