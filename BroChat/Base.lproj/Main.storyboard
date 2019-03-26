@@ -85,11 +85,10 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="error" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l8W-UZ-VyJ">
-                                <rect key="frame" x="110" y="45" width="250" height="80"/>
+                                <rect key="frame" x="15" y="45" width="345" height="80"/>
                                 <color key="backgroundColor" red="0.92941176470588238" green="0.96862745098039216" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="Ecl-Nq-dPp"/>
-                                    <constraint firstAttribute="width" constant="250" id="g6x-Fd-PQ4"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" red="0.12549019607843137" green="0.30588235294117649" blue="0.37254901960784315" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -100,6 +99,7 @@
                         <constraints>
                             <constraint firstItem="dgv-oI-y8v" firstAttribute="leading" secondItem="Xp6-ca-D7p" secondAttribute="leading" constant="15" id="04P-Lh-jeh"/>
                             <constraint firstItem="Xp6-ca-D7p" firstAttribute="trailing" secondItem="dgv-oI-y8v" secondAttribute="trailing" constant="15" id="1Rt-yY-ybb"/>
+                            <constraint firstItem="l8W-UZ-VyJ" firstAttribute="leading" secondItem="LhT-NE-oEa" secondAttribute="leading" constant="15" id="Jns-f3-xEi"/>
                             <constraint firstItem="5hR-vr-yaK" firstAttribute="top" secondItem="dgv-oI-y8v" secondAttribute="bottom" constant="10" id="UGr-49-9BS"/>
                             <constraint firstItem="dgv-oI-y8v" firstAttribute="top" secondItem="NrA-fN-EiW" secondAttribute="bottom" constant="25" id="XM2-ao-TyJ"/>
                             <constraint firstItem="NrA-fN-EiW" firstAttribute="centerX" secondItem="LhT-NE-oEa" secondAttribute="centerX" id="aMQ-mp-kIl"/>

@@ -109,15 +109,15 @@ extension LoginController:UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
         if (segmentOutlet.selectedSegmentIndex == LoginState.Login.rawValue) {
+            
+            
             print("Logging in")
             
-
-            if let email = emailOutlet.text, let password = passwordOutlet.text {
+            LoginToFirebase(emailOutletText: emailOutlet, passwordOutletText: passwordOutlet)
+           
                 
-                Auth.auth().signIn(withEmail: email, password: password) { (result, error) in
-                    
-                }
-            }
+            
+            
             
             
         } else {
@@ -135,25 +135,64 @@ extension LoginController:UITextFieldDelegate {
 // MARK:- Firebase Registration functionality and Login funtionality
 extension LoginController {
     
+    private func LoginToFirebase(emailOutletText:UITextField, passwordOutletText:UITextField) {
+        guard let email = emailOutletText.text else {
+            print("There is no email address.")
+            self.displayLabelForErrors(label: self.errorLabelOutlet, msg: "There is no email address.")
+            return
+        }
+        
+        guard let password = passwordOutletText.text else {
+            print("There is no password.")
+            self.displayLabelForErrors(label: self.errorLabelOutlet, msg: "There is no password.")
+            return
+        }
+        
+        Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
+            
+            guard error == nil else {
+                
+                if let errLocalizedDescription = error?.localizedDescription {
+                    print("My Error:\(errLocalizedDescription)")
+                    self.displayLabelForErrors(label: self.errorLabelOutlet, msg: errLocalizedDescription)
+                } else {
+                    print("There was a problem wih the login.")
+                    self.displayLabelForErrors(label: self.errorLabelOutlet, msg: "There was a problem wih the login.")
+                }
+                
+                return
+            }
+            
+            
+            guard user != nil else {
+                print("Username and password do not match.")
+                self.displayLabelForErrors(label: self.errorLabelOutlet, msg: "Username and password do not match.")
+                return
+            }
+            
+            self.dismiss(animated: true , completion: nil)
+        }
+    }
+    
+    
+    
     private func sanityCheckingWithRegistrationIntoFirebase(usernameField:UITextField, emailField:UITextField, passwordField:UITextField) {
         
         guard let usernameOutletText = usernameField.text, usernameOutletText != "", !usernameOutletText.isEmpty else {
             print("Enter a value for username.")
-            self.displayLabelForErrors(label: errorLabelOutlet, msg: "Enter a username.")
-//            self.errorLabelOutlet.text = "enter a username."
+            self.displayLabelForErrors(label: self.errorLabelOutlet, msg: "Enter a username.")
             return
         }
         
         guard let emailOutletText = emailField.text, let isValidEmail = isValidEmailAddress(testStr: emailOutletText) as? Bool, isValidEmail == true else {
             print("Email is not valid")
-            self.displayLabelForErrors(label: errorLabelOutlet, msg: "Email is not valid")
-//            self.errorLabelOutlet.text = "email is not valid."
+            self.displayLabelForErrors(label: self.errorLabelOutlet, msg: "Email is not valid")
             return
         }
         
         guard let passwordOutletText = passwordField.text, !passwordOutletText.isEmpty, passwordOutletText.count >= 6 else {
             print("The password needs to have 6 or more characters.")
-            self.displayLabelForErrors(label: errorLabelOutlet, msg: "The password needs to have 6 or more characters.")
+            self.displayLabelForErrors(label: self.errorLabelOutlet, msg: "The password needs to have 6 or more characters.")
             return
         }
         
@@ -216,12 +255,12 @@ extension LoginController {
     private func fadeInfadeOut(label:UILabel) {
         DispatchQueue.main.async {
             if (label.alpha == 0.0) {
-                UIView.animate(withDuration: 1.0, delay: 0.2, options: .curveEaseIn, animations: {
+                UIView.animate(withDuration: 1.0, delay: 0.2, options: .curveEaseOut, animations: {
                     label.alpha = 1.0
                 }, completion: { (success) in
                     if (success) {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-                            UIView.animate(withDuration: 1.0, delay: 0.2, options: .curveEaseIn, animations: {
+                            UIView.animate(withDuration: 1.0, delay: 0.2, options: .curveEaseOut, animations: {
                                 label.alpha = 0.0
                             }, completion: nil)
                         })
