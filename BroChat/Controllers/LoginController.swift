@@ -34,10 +34,11 @@ class LoginController: UIViewController {
         usernameOutlet.delegate = self
         
         errorLabelOutlet.layer.masksToBounds = true
-        errorLabelOutlet.layer.borderWidth = 3
+        errorLabelOutlet.layer.borderWidth = 5
         errorLabelOutlet.layer.borderColor = UIColor.customDarkBlue.cgColor
         errorLabelOutlet.textColor = UIColor.customDarkBlue
         errorLabelOutlet.layer.cornerRadius = 8
+        errorLabelOutlet.alpha = 0.0
         
         
         
@@ -122,28 +123,7 @@ extension LoginController:UITextFieldDelegate {
         } else {
             print("Registering")
             
-            guard let usernameOutletText = usernameOutlet.text, usernameOutletText != "", !usernameOutletText.isEmpty else {
-                print("Enter a value for username.")
-                self.errorLabelOutlet.text = "enter a username."
-                return false
-            }
-            
-            guard let emailOutletText = emailOutlet.text, let isValidEmail = isValidEmailAddress(emailAddressString: emailOutletText) as? Bool, isValidEmail == true else {
-                print("Email is not valid")
-                self.errorLabelOutlet.text = "email is not valid."
-                return false
-            }
-            
-            guard let passwordOutletText = passwordOutlet.text, !passwordOutletText.isEmpty, passwordOutletText.count >= 6 else {
-                print("The password needs to have 6 or more characters.")
-                return false
-            }
-            
-            registerIntoFirebase(username: usernameOutlet.text, emailAddress: emailOutlet.text, password: passwordOutlet.text!) { (success, error, name) in
-                if (success!) {
-                    self.dismiss(animated: true, completion: nil)
-                }
-            }
+           self.sanityCheckingWithRegistrationIntoFirebase(usernameField: usernameOutlet, emailField: emailOutlet, passwordField: passwordOutlet)
             
         }
         return true
@@ -154,6 +134,38 @@ extension LoginController:UITextFieldDelegate {
 
 // MARK:- Firebase Registration functionality and Login funtionality
 extension LoginController {
+    
+    private func sanityCheckingWithRegistrationIntoFirebase(usernameField:UITextField, emailField:UITextField, passwordField:UITextField) {
+        
+        guard let usernameOutletText = usernameField.text, usernameOutletText != "", !usernameOutletText.isEmpty else {
+            print("Enter a value for username.")
+            self.displayLabelForErrors(label: errorLabelOutlet, msg: "Enter a username.")
+//            self.errorLabelOutlet.text = "enter a username."
+            return
+        }
+        
+        guard let emailOutletText = emailField.text, let isValidEmail = isValidEmailAddress(testStr: emailOutletText) as? Bool, isValidEmail == true else {
+            print("Email is not valid")
+            self.displayLabelForErrors(label: errorLabelOutlet, msg: "Email is not valid")
+//            self.errorLabelOutlet.text = "email is not valid."
+            return
+        }
+        
+        guard let passwordOutletText = passwordField.text, !passwordOutletText.isEmpty, passwordOutletText.count >= 6 else {
+            print("The password needs to have 6 or more characters.")
+            self.displayLabelForErrors(label: errorLabelOutlet, msg: "The password needs to have 6 or more characters.")
+            return
+        }
+        
+        registerIntoFirebase(username: usernameOutlet.text, emailAddress: emailOutlet.text, password: passwordOutlet.text!) { (success, error, name) in
+            if (success!) {
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
+        
+    }
+    
+    
     
     private func registerIntoFirebase(username:String?, emailAddress:String?, password:String, completionHandler:@escaping(_ succeed:Bool?,_ error:Error?,_ username:String?) -> ()) {
         
@@ -176,40 +188,63 @@ extension LoginController {
 }
 
 
-// MARK:- Logic that marks whether Login or Register
+// MARK:- Field Validation Logic
 extension LoginController {
+    
+    func isValidEmailAddress(testStr:String) -> Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailTest.evaluate(with: testStr)
+    }
     
    
     
-    //function to check if an email is valid or not. returns true if email is valid, false if email is invalid
-     func isValidEmailAddress(emailAddressString: String) -> Bool {
-        var returnValue = true
-        
-        //regular expresion to define the format for email.
-        let emailRegEx = "[A-Z0-9a-z.-_]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,3}"
-        
-        do {
-            let regex = try NSRegularExpression(pattern: emailRegEx)
-            let nsString = emailAddressString as NSString
-            
-            //compare the entered email by the defined format of email.
-            let results = regex.matches(in: emailAddressString, range: NSRange(location: 0, length: nsString.length))
-            
-            //if format is wrong, then return false
-            if results.count == 0
-            {
-                returnValue = false
-            }
-            
-        } catch let error as NSError {
-            //error while matching the format & email.
-            print("invalid regex: \(error.localizedDescription)")
-            returnValue = false
-        }
-        
-        return  returnValue
-    }
+ 
 }
+
+// MARK: Animate the error message
+extension LoginController {
+    
+    private func displayLabelForErrors(label:UILabel, msg:String) {
+        DispatchQueue.main.async {
+            label.text = "\(msg)"
+        }
+        fadeInfadeOut(label: label)
+    }
+    
+    private func fadeInfadeOut(label:UILabel) {
+        DispatchQueue.main.async {
+            if (label.alpha == 0.0) {
+                UIView.animate(withDuration: 1.0, delay: 0.2, options: .curveEaseIn, animations: {
+                    label.alpha = 1.0
+                }, completion: { (success) in
+                    if (success) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                            UIView.animate(withDuration: 1.0, delay: 0.2, options: .curveEaseIn, animations: {
+                                label.alpha = 0.0
+                            }, completion: nil)
+                        })
+                    }
+                })
+            }
+        }
+    }
+    
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
