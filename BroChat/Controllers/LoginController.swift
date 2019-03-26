@@ -17,6 +17,7 @@ class LoginController: UIViewController {
     @IBOutlet weak var usernameOutlet: UITextField!
     @IBOutlet weak var emailOutlet: UITextField!
     @IBOutlet weak var passwordOutlet: UITextField!
+    @IBOutlet weak var errorLabelOutlet: UILabel!
     
     @IBOutlet weak var imageView: UIImageView!
     
@@ -31,6 +32,13 @@ class LoginController: UIViewController {
         passwordOutlet.delegate = self
         emailOutlet.delegate = self
         usernameOutlet.delegate = self
+        
+        errorLabelOutlet.layer.masksToBounds = true
+        errorLabelOutlet.layer.borderWidth = 3
+        errorLabelOutlet.layer.borderColor = UIColor.customDarkBlue.cgColor
+        errorLabelOutlet.textColor = UIColor.customDarkBlue
+        errorLabelOutlet.layer.cornerRadius = 8
+        
         
         
         
@@ -95,9 +103,11 @@ extension LoginController {
 // MARK:- UITextFieldDelegate functionality
 extension LoginController:UITextFieldDelegate {
     
+    
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
-        if IsLoginElse(input: segmentOutlet.selectedSegmentIndex) {
+        if (segmentOutlet.selectedSegmentIndex == LoginState.Login.rawValue) {
             print("Logging in")
             
 
@@ -112,13 +122,29 @@ extension LoginController:UITextFieldDelegate {
         } else {
             print("Registering")
             
+            guard let usernameOutletText = usernameOutlet.text, usernameOutletText != "", !usernameOutletText.isEmpty else {
+                print("Enter a value for username.")
+                self.errorLabelOutlet.text = "enter a username."
+                return false
+            }
+            
+            guard let emailOutletText = emailOutlet.text, let isValidEmail = isValidEmailAddress(emailAddressString: emailOutletText) as? Bool, isValidEmail == true else {
+                print("Email is not valid")
+                self.errorLabelOutlet.text = "email is not valid."
+                return false
+            }
+            
+            guard let passwordOutletText = passwordOutlet.text, !passwordOutletText.isEmpty, passwordOutletText.count >= 6 else {
+                print("The password needs to have 6 or more characters.")
+                return false
+            }
+            
             registerIntoFirebase(username: usernameOutlet.text, emailAddress: emailOutlet.text, password: passwordOutlet.text!) { (success, error, name) in
-                
                 if (success!) {
                     self.dismiss(animated: true, completion: nil)
                 }
-                
             }
+            
         }
         return true
     }
@@ -153,9 +179,7 @@ extension LoginController {
 // MARK:- Logic that marks whether Login or Register
 extension LoginController {
     
-    private func IsLoginElse(input:Int) -> Bool {
-        return input == 0 ? true : false
-    }
+   
     
     //function to check if an email is valid or not. returns true if email is valid, false if email is invalid
      func isValidEmailAddress(emailAddressString: String) -> Bool {
