@@ -24,7 +24,9 @@ class LoginController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        segmentOutlet.selectedSegmentIndex = LoginState.Login.rawValue
+        
+        setupSegmentedController()
+        
         setFieldsOnUI(segmentedIndex: segmentOutlet.selectedSegmentIndex)
         setviews()
         setimageView()
@@ -58,6 +60,13 @@ class LoginController: UIViewController {
 // MARK:- UI Layout
 extension LoginController {
     
+    private func setupSegmentedController() {
+        segmentOutlet.selectedSegmentIndex = LoginState.Login.rawValue
+        
+        segmentOutlet.tintColor = UIColor.customDarkBlue
+        segmentOutlet.backgroundColor = UIColor.lightPinkish
+    }
+    
     
     private func setupErrorLabel() {
         errorLabelOutlet.layer.masksToBounds = true
@@ -69,8 +78,9 @@ extension LoginController {
     }
     
     private func setimageView() {
-        imageView.layer.borderColor = UIColor.customDarkBlue.cgColor
-        imageView.layer.borderWidth = 1
+        imageView.layer.borderColor = UIColor.lightBlue1.cgColor
+        imageView.backgroundColor = UIColor.lightBlue2
+        imageView.layer.borderWidth = 3
         imageView.layer.cornerRadius = 10
         imageView.layer.masksToBounds = true
     }
@@ -81,6 +91,15 @@ extension LoginController {
     }
     
     private func setFieldsOnUI(segmentedIndex:Int) {
+        usernameOutlet.backgroundColor = UIColor.lightBlue1
+        emailOutlet.backgroundColor = UIColor.lightBlue1
+        passwordOutlet.backgroundColor = UIColor.lightBlue1
+       
+        usernameOutlet.attributedPlaceholder = NSAttributedString(string: "username", attributes: [NSAttributedString.Key.foregroundColor:UIColor.darkPinkish])
+        emailOutlet.attributedPlaceholder = NSAttributedString(string: "email", attributes: [NSAttributedString.Key.foregroundColor:UIColor.darkPinkish])
+        passwordOutlet.attributedPlaceholder = NSAttributedString(string: "password", attributes: [NSAttributedString.Key.foregroundColor:UIColor.darkPinkish])
+            
+
         usernameOutlet.isHidden = segmentedIndex == 0 ? true : false
         imageView.isHidden = segmentedIndex == 0 ? true : false
         emailOutlet.isHidden = false
