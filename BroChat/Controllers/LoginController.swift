@@ -38,22 +38,12 @@ class LoginController: UIViewController {
         emailOutlet.delegate = self
         usernameOutlet.delegate = self
         
-//        let ref = Database.database().reference()
-//        ref.child("someId/name").setValue("Mike")
-        
-        
-        
-        
         
     }
     
     @IBAction func segmentAction(_ sender: Any) {
         
         setFieldsOnUI(segmentedIndex: segmentOutlet.selectedSegmentIndex)
-        
-        
-        
-
         
     }
     
@@ -194,10 +184,7 @@ extension LoginController {
                 return
             }
             
-            // Save user info to Database
             
-//            let ref = Database.database().reference()
-//            ref.child("someId/name").setValue("Mike")
             
             
             self.dismiss(animated: true , completion: nil)
@@ -228,19 +215,6 @@ extension LoginController {
         
         registerIntoFirebase(username: usernameOutletText, emailAddress:emailOutletText, password: passwordOutletText) { (success, error, name) in
             if (success!) {
-                
-//                let ref = Database.database().reference()
-//                let usersReference = ref.child("users").child(user.uid)
-//                let values = ["username":usernameOutletText, "email":emailOutletText]
-//                usersReference.updateChildValues(values, withCompletionBlock: { (err, reference) in
-//                    guard err == nil else {
-//                        print("There was an err saving to firebase.")
-//                        return
-//                    }
-//                    
-//                    print("Successful save to Firebase")
-//                })
-                
                 self.dismiss(animated: true, completion: nil)
             }
         }
@@ -259,12 +233,35 @@ extension LoginController {
                     completionHandler(false, error, username)
                     return
                 }
+                
+                
+                self.storeUserDataIntoFirebaseDatabase(usernameStr: username, emailStr: email)
+                
+                
                 completionHandler(true, nil, username)
             }
         }
     }
     
-    
+    private func storeUserDataIntoFirebaseDatabase(usernameStr:String, emailStr:String) {
+        
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("There was an error getting the userId")
+            return
+        }
+        
+        let ref = Database.database().reference()
+        let usersReference = ref.child("users").child(userID)
+        let values = ["username":usernameStr, "email":emailStr]
+        usersReference.updateChildValues(values, withCompletionBlock: { (err, reference) in
+            guard err == nil else {
+                print("Error saving to Firebase Database.")
+                return
+            }
+            
+            print("Saved to Firebase database.")
+        })
+    }
     
     
 }
