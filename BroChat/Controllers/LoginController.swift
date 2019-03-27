@@ -9,6 +9,8 @@
 import UIKit
 import FirebaseAuth
 import Firebase
+import FirebaseDatabase
+
 
 class LoginController: UIViewController {
     
@@ -36,7 +38,8 @@ class LoginController: UIViewController {
         emailOutlet.delegate = self
         usernameOutlet.delegate = self
         
-        
+//        let ref = Database.database().reference()
+//        ref.child("someId/name").setValue("Mike")
         
         
         
@@ -47,6 +50,8 @@ class LoginController: UIViewController {
     @IBAction func segmentAction(_ sender: Any) {
         
         setFieldsOnUI(segmentedIndex: segmentOutlet.selectedSegmentIndex)
+        
+        
         
 
         
@@ -189,6 +194,12 @@ extension LoginController {
                 return
             }
             
+            // Save user info to Database
+            
+//            let ref = Database.database().reference()
+//            ref.child("someId/name").setValue("Mike")
+            
+            
             self.dismiss(animated: true , completion: nil)
         }
     }
@@ -215,8 +226,21 @@ extension LoginController {
             return
         }
         
-        registerIntoFirebase(username: usernameOutlet.text, emailAddress: emailOutlet.text, password: passwordOutlet.text!) { (success, error, name) in
+        registerIntoFirebase(username: usernameOutletText, emailAddress:emailOutletText, password: passwordOutletText) { (success, error, name) in
             if (success!) {
+                
+//                let ref = Database.database().reference()
+//                let usersReference = ref.child("users").child(user.uid)
+//                let values = ["username":usernameOutletText, "email":emailOutletText]
+//                usersReference.updateChildValues(values, withCompletionBlock: { (err, reference) in
+//                    guard err == nil else {
+//                        print("There was an err saving to firebase.")
+//                        return
+//                    }
+//                    
+//                    print("Successful save to Firebase")
+//                })
+                
                 self.dismiss(animated: true, completion: nil)
             }
         }
