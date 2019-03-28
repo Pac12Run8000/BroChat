@@ -27,6 +27,7 @@ class LoginController: UIViewController {
         super.viewDidLoad()
         
         
+        
         setupSegmentedController()
         
         setFieldsOnUI(segmentedIndex: segmentOutlet.selectedSegmentIndex)
@@ -235,7 +236,11 @@ extension LoginController {
                 }
                 
                 
-                self.storeUserDataIntoFirebaseDatabase(usernameStr: username, emailStr: email)
+                self.storeUserDataIntoFirebaseDatabase(usernameStr: username, emailStr: email, completionHandler: { (succeed, err) in
+                    if (succeed) {
+                        print("Information was saved to Firebase database")
+                    }
+                })
                 
                 
                 completionHandler(true, nil, username)
@@ -243,7 +248,7 @@ extension LoginController {
         }
     }
     
-    private func storeUserDataIntoFirebaseDatabase(usernameStr:String, emailStr:String) {
+    private func storeUserDataIntoFirebaseDatabase(usernameStr:String, emailStr:String, completionHandler:@escaping (_ success:Bool, _ er:Error?) -> ()) {
         
         guard let userID = Auth.auth().currentUser?.uid else {
             print("There was an error getting the userId")
@@ -256,10 +261,12 @@ extension LoginController {
         usersReference.updateChildValues(values, withCompletionBlock: { (err, reference) in
             guard err == nil else {
                 print("Error saving to Firebase Database.")
+                completionHandler(false, err)
                 return
             }
+            completionHandler(true, nil)
             
-            print("Saved to Firebase database.")
+            
         })
     }
     

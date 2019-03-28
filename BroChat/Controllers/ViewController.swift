@@ -7,18 +7,38 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if (Auth.auth().currentUser?.uid == nil) {
+            performSegue(withIdentifier: "segueLogin", sender: self)
+        }
 
         setupNavbar()
         backgroundAttributes()
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        
+        
+    }
+    
     @IBAction func logoutButtonAction(_ sender: Any) {
+        
+        do {
+            try Auth.auth().signOut()
+             performSegue(withIdentifier: "segueLogin", sender: self)
+        } catch {
+            print("error:\(error.localizedDescription)")
+        }
+        
         
     }
     
