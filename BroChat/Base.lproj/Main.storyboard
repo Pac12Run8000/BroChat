@@ -126,6 +126,21 @@
             </objects>
             <point key="canvasLocation" x="2169" y="-565"/>
         </scene>
+        <!--New Message View Controller-->
+        <scene sceneID="ar2-u7-eHw">
+            <objects>
+                <viewController id="SCH-BR-BEX" customClass="NewMessageViewController" customModule="BroChat" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="3OD-jt-aL5">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="Tuy-Y6-x1q"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="s2V-WX-Ix3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2169" y="-1267"/>
+        </scene>
         <!--Main-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -142,9 +157,15 @@
                                 <action selector="logoutButtonAction:" destination="BYZ-38-t0r" id="DRQ-Qg-SiR"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="compose" id="cKX-P5-Ojz">
+                            <connections>
+                                <action selector="newMessageButtonAction:" destination="BYZ-38-t0r" id="J6s-yy-PtF"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <segue destination="CYy-L7-HDt" kind="presentation" identifier="segueLogin" id="EaS-x9-dUF"/>
+                        <segue destination="SCH-BR-BEX" kind="show" identifier="newMsgSegue" id="ofS-3E-4yc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

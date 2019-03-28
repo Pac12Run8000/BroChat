@@ -36,7 +36,10 @@ class ViewController: UIViewController {
     
     
     
-   
+    @IBAction func newMessageButtonAction(_ sender: Any) {
+        performSegue(withIdentifier: "newMsgSegue", sender: self)
+    }
+    
     
     @IBAction func logoutButtonAction(_ sender: Any) {
         
