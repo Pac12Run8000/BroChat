@@ -14,8 +14,10 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if (Auth.auth().currentUser?.uid == nil) {
-            performSegue(withIdentifier: "segueLogin", sender: self)
+        ifLoggedOutGetLoginController { (isNil) in
+            if (isNil) {
+                self.performSegue(withIdentifier: "segueLogin", sender: self)
+            }
         }
 
         setupNavbar()
@@ -23,22 +25,15 @@ class ViewController: UIViewController {
         
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        
-        
-    }
+   
     
     @IBAction func logoutButtonAction(_ sender: Any) {
         
-        do {
-            try Auth.auth().signOut()
-             performSegue(withIdentifier: "segueLogin", sender: self)
-        } catch {
-            print("error:\(error.localizedDescription)")
+        logoutSetUseridToNil { (isSignedOut) in
+            if (isSignedOut) {
+                self.performSegue(withIdentifier: "segueLogin", sender: self)
+            }
         }
-        
         
     }
     
@@ -62,4 +57,26 @@ extension ViewController {
         view.backgroundColor = UIColor.lightPinkish
     }
     
+}
+// MARK:- Logout functionality
+extension ViewController {
+    
+    private func logoutSetUseridToNil(handler:@escaping(_ isSignedOut:Bool) -> ()) {
+        do {
+            try Auth.auth().signOut()
+            handler(true)
+        } catch {
+            handler(false)
+            print("error:\(error.localizedDescription)")
+        }
+    }
+    
+    
+    private func ifLoggedOutGetLoginController(handler:@escaping(_ isUseridNil:Bool) -> ()) {
+        if (Auth.auth().currentUser?.uid == nil) {
+            handler(true)
+        } else {
+            handler(false)
+        }
+    }
 }
