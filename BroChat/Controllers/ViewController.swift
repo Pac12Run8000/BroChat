@@ -8,6 +8,7 @@
 
 import UIKit
 import FirebaseAuth
+import FirebaseDatabase
 
 class ViewController: UIViewController {
 
@@ -17,6 +18,8 @@ class ViewController: UIViewController {
         ifLoggedOutGetLoginController { (isNil) in
             if (isNil) {
                 self.performSegue(withIdentifier: "segueLogin", sender: self)
+            } else {
+                self.getCurrentUser()
             }
         }
 
@@ -25,11 +28,28 @@ class ViewController: UIViewController {
         
     }
     
+    private func getCurrentUser() {
+        navigationItem.title = "generic user"
+        guard let uid = Auth.auth().currentUser?.uid else {
+            print("There was an error getting userId")
+            return
+        }
+        
+        Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            if let dictionary = snapshot.value as? [String:AnyObject] {
+                self.navigationItem.title = dictionary["username"] as? String
+            }
+            
+        }, withCancel: nil)
+        
+    }
+    
    
     
     @IBAction func logoutButtonAction(_ sender: Any) {
         
-        logoutSetUseridToNil { (isSignedOut) in
+        logoutSetUseridToNil { (isSignedOut, err) in
             if (isSignedOut) {
                 self.performSegue(withIdentifier: "segueLogin", sender: self)
             }
@@ -61,12 +81,12 @@ extension ViewController {
 // MARK:- Logout functionality
 extension ViewController {
     
-    private func logoutSetUseridToNil(handler:@escaping(_ isSignedOut:Bool) -> ()) {
+    private func logoutSetUseridToNil(handler:@escaping(_ isSignedOut:Bool,_ error:Error?) -> ()) {
         do {
             try Auth.auth().signOut()
-            handler(true)
+            handler(true, nil)
         } catch {
-            handler(false)
+            handler(false, error)
             print("error:\(error.localizedDescription)")
         }
     }
