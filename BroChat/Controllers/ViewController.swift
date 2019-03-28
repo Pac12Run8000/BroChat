@@ -14,36 +14,27 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        ifLoggedOutGetLoginController { (isNil) in
-            if (isNil) {
-                self.performSegue(withIdentifier: "segueLogin", sender: self)
-            } else {
-                self.getCurrentUser()
-            }
-        }
 
         setupNavbar()
         backgroundAttributes()
         
     }
     
-    private func getCurrentUser() {
-        navigationItem.title = "generic user"
-        guard let uid = Auth.auth().currentUser?.uid else {
-            print("There was an error getting userId")
-            return
-        }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            if let dictionary = snapshot.value as? [String:AnyObject] {
-                self.navigationItem.title = dictionary["username"] as? String
+        ifLoggedOutGetLoginController { (isNil) in
+            if (isNil) {
+                self.performSegue(withIdentifier: "segueLogin", sender: self)
+            } else {
+                self.getCurrentUserDictionary(handler: { (succeed, dictionary) in
+                    self.navigationItem.title = dictionary!["username"] as? String
+                })
             }
-            
-        }, withCancel: nil)
-        
+        }
     }
+    
+    
     
    
     
@@ -80,6 +71,24 @@ extension ViewController {
 }
 // MARK:- Logout functionality
 extension ViewController {
+    
+    private func getCurrentUserDictionary(handler:@escaping(_ success:Bool,_ dictionary:[String:AnyObject]?) ->()) {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            print("There was an error getting userId")
+            return
+        }
+        
+        Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            if let dictionary = snapshot.value as? [String:AnyObject] {
+                handler(true, dictionary)
+            } else {
+                handler(false, nil)
+            }
+            
+        }, withCancel: nil)
+        
+    }
     
     private func logoutSetUseridToNil(handler:@escaping(_ isSignedOut:Bool,_ error:Error?) -> ()) {
         do {
