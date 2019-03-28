@@ -7,8 +7,12 @@
 //
 
 import UIKit
+import FirebaseDatabase
 
 class NewMessageViewController: UIViewController {
+    
+    var ref:DatabaseReference?
+    var users = [User]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -16,9 +20,25 @@ class NewMessageViewController: UIViewController {
         setupNavbar()
         backgroundAttributes()
         
+        ref = Database.database().reference()
+        ref?.child("users").observe(.childAdded, with: { (snapshot) in
+            
+            
+            
+            print(snapshot)
+
+            
+            
+        })
     }
     
-
+    
+    
+    
+    @IBAction func cancelButtonAction(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
+    }
+    
     
 
 }
@@ -34,5 +54,9 @@ extension NewMessageViewController {
     private func backgroundAttributes() {
         view.backgroundColor = UIColor.lightPinkish
     }
+    
+}
+
+extension NewMessageViewController {
     
 }

@@ -16,6 +16,7 @@
 		09403DD622453CB1000ADA51 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09403DD522453CB1000ADA51 /* Extensions.swift */; };
 		09403DDA22488C72000ADA51 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 09403DD922488C72000ADA51 /* GoogleService-Info.plist */; };
 		094428AB224D28F600152D32 /* NewMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094428AA224D28F600152D32 /* NewMessageViewController.swift */; };
+		094428AE224D6A8200152D32 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094428AD224D6A8200152D32 /* User.swift */; };
 		486FA3485488CEBCC4002467 /* Pods_BroChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBCE96DB5C412402EEE914B0 /* Pods_BroChat.framework */; };
 /* End PBXBuildFile section */
 
@@ -31,6 +32,7 @@
 		09403DD522453CB1000ADA51 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		09403DD922488C72000ADA51 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		094428AA224D28F600152D32 /* NewMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageViewController.swift; sourceTree = "<group>"; };
+		094428AD224D6A8200152D32 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		81EF952E5C3641C360283B34 /* Pods-BroChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BroChat.release.xcconfig"; path = "Target Support Files/Pods-BroChat/Pods-BroChat.release.xcconfig"; sourceTree = "<group>"; };
 		BBCE96DB5C412402EEE914B0 /* Pods_BroChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BroChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB9FD7A46367090730F2C202 /* Pods-BroChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BroChat.debug.xcconfig"; path = "Target Support Files/Pods-BroChat/Pods-BroChat.debug.xcconfig"; sourceTree = "<group>"; };
@@ -69,6 +71,7 @@
 		09403DBC22452E1E000ADA51 /* BroChat */ = {
 			isa = PBXGroup;
 			children = (
+				094428AC224D6A6900152D32 /* Model */,
 				09403DD422453C92000ADA51 /* Extensions */,
 				09403DCF22453A73000ADA51 /* Controllers */,
 				09403DBD22452E1E000ADA51 /* AppDelegate.swift */,
@@ -97,6 +100,14 @@
 				09403DD522453CB1000ADA51 /* Extensions.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		094428AC224D6A6900152D32 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				094428AD224D6A8200152D32 /* User.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		1B912A67270526BE64EF0605 /* Pods */ = {
@@ -245,6 +256,7 @@
 			files = (
 				09403DD122453ABC000ADA51 /* ViewController.swift in Sources */,
 				09403DD322453C04000ADA51 /* LoginController.swift in Sources */,
+				094428AE224D6A8200152D32 /* User.swift in Sources */,
 				094428AB224D28F600152D32 /* NewMessageViewController.swift in Sources */,
 				09403DBE22452E1E000ADA51 /* AppDelegate.swift in Sources */,
 				09403DD622453CB1000ADA51 /* Extensions.swift in Sources */,
