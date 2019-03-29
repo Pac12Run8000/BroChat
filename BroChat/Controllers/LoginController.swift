@@ -196,24 +196,30 @@ extension LoginController {
     
     private func sanityCheckingWithRegistrationIntoFirebase(usernameField:UITextField, emailField:UITextField, passwordField:UITextField) {
         
+        guard let imageData = imageView.image, imageData != nil else {
+            print("Select an image from photo library.")
+            self.displayLabelForErrors(label: self.errorLabelOutlet, msg: "Select an image from photo library.")
+            return
+        }
+        
         guard let usernameOutletText = usernameField.text, usernameOutletText != "", !usernameOutletText.isEmpty else {
             print("Enter a value for username.")
             self.displayLabelForErrors(label: self.errorLabelOutlet, msg: "Enter a username.")
             return
         }
-        
+
         guard let emailOutletText = emailField.text, let isValidEmail = isValidEmailAddress(testStr: emailOutletText) as? Bool, isValidEmail == true else {
             print("Email is not valid")
             self.displayLabelForErrors(label: self.errorLabelOutlet, msg: "Email is not valid")
             return
         }
-        
+
         guard let passwordOutletText = passwordField.text, !passwordOutletText.isEmpty, passwordOutletText.count >= 6 else {
             print("The password needs to have 6 or more characters.")
             self.displayLabelForErrors(label: self.errorLabelOutlet, msg: "The password needs to have 6 or more characters.")
             return
         }
-        
+
         registerIntoFirebase(username: usernameOutletText, emailAddress:emailOutletText, password: passwordOutletText) { (success, error, name) in
             if (success!) {
                 self.dismiss(animated: true, completion: nil)
@@ -321,7 +327,7 @@ extension LoginController {
 }
 
 // MARK:- Profile picture functionality
-extension LoginController {
+extension LoginController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     private func setupGestureRecognizerForImageView() {
         imageView.isUserInteractionEnabled = true
@@ -330,7 +336,29 @@ extension LoginController {
     }
     
     @objc func imageAction() {
-        print("This is an image")
+        let picker = UIImagePickerController()
+        picker.delegate = self
+        picker.allowsEditing = true
+        
+        present(picker, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        if let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            self.imageView.image = originalImage
+            dismiss(animated: true, completion: nil)
+        } else if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+            self.imageView.image = editedImage
+            dismiss(animated: true, completion: nil)
+        }
+        
+        
+
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
     }
     
 }
