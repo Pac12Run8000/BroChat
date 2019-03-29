@@ -11,25 +11,40 @@ import FirebaseDatabase
 
 class NewMessageViewController: UIViewController {
     
+    
+    @IBOutlet weak var tableView: UITableView!
+    
     var ref:DatabaseReference?
     var users = [User]()
-
+    var databaseHandle:DatabaseHandle?
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableView.delegate = self
+        tableView.dataSource = self
         
         setupNavbar()
         backgroundAttributes()
         
         ref = Database.database().reference()
-        ref?.child("users").observe(.childAdded, with: { (snapshot) in
+        databaseHandle = ref?.child("users").observe(.childAdded, with: { (snapshot) in
             
+        let user = snapshot.value as? [String:AnyObject]
+            let myUser = User()
             
+            myUser.username = user!["username"] as? String
+            myUser.email = user!["email"] as? String
             
-            print(snapshot)
-
+            self.users.append(myUser)
             
-            
+            self.tableView.reloadData()
         })
+        
+        
+        
     }
     
     
@@ -42,6 +57,33 @@ class NewMessageViewController: UIViewController {
     
 
 }
+
+
+// MARK:- UITableviewDelegate methods
+extension NewMessageViewController:UITableViewDelegate, UITableViewDataSource {
+    
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return users.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        
+        cell.textLabel?.text = users[indexPath.row].username
+        cell.detailTextLabel?.text = users[indexPath.row].email
+        
+        return cell
+    }
+    
+    
+}
+
+
+
+
+
+
 // MARK:- UILayout attributes
 extension NewMessageViewController {
     
