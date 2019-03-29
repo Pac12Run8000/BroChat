@@ -26,7 +26,7 @@ class LoginController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        setupGestureRecognizerForImageView()
         
         setupSegmentedController()
         
@@ -48,7 +48,7 @@ class LoginController: UIViewController {
         
     }
     
-    
+   
 
     
 
@@ -318,6 +318,21 @@ extension LoginController {
     }
     
 
+}
+
+// MARK:- Profile picture functionality
+extension LoginController {
+    
+    private func setupGestureRecognizerForImageView() {
+        imageView.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.imageAction))
+        imageView.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc func imageAction() {
+        print("This is an image")
+    }
+    
 }
 
 
