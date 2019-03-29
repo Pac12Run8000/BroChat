@@ -31,25 +31,8 @@ class NewMessageViewController: UIViewController {
         
         ref = Database.database().reference()
         databaseHandle = ref?.child("users").observe(.childAdded, with: { (snapshot) in
-            
-            if let user = snapshot.value as? [String:AnyObject] {
-                
-                let myUser = User()
-                myUser.username = user["username"] as? String
-                myUser.email = user["email"] as? String
-                
-                self.users.append(myUser)
-                
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
-                
-            }
-           
+            self.processSnapShot(mySnapshot: snapshot)
         })
-        
-        
-        
     }
     
     
@@ -104,6 +87,26 @@ extension NewMessageViewController {
     
 }
 
+// MARK:- Fetch Firebase Data
 extension NewMessageViewController {
+    
+    
+    private func processSnapShot(mySnapshot:DataSnapshot) {
+        
+        if let user = mySnapshot.value as? [String:AnyObject] {
+
+            let myUser = User()
+            myUser.username = user["username"] as? String
+            myUser.email = user["email"] as? String
+
+            self.users.append(myUser)
+
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+
+        }
+        
+    }
     
 }
