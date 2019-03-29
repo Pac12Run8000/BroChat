@@ -32,15 +32,20 @@ class NewMessageViewController: UIViewController {
         ref = Database.database().reference()
         databaseHandle = ref?.child("users").observe(.childAdded, with: { (snapshot) in
             
-        let user = snapshot.value as? [String:AnyObject]
-            let myUser = User()
-            
-            myUser.username = user!["username"] as? String
-            myUser.email = user!["email"] as? String
-            
-            self.users.append(myUser)
-            
-            self.tableView.reloadData()
+            if let user = snapshot.value as? [String:AnyObject] {
+                
+                let myUser = User()
+                myUser.username = user["username"] as? String
+                myUser.email = user["email"] as? String
+                
+                self.users.append(myUser)
+                
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+                
+            }
+           
         })
         
         
