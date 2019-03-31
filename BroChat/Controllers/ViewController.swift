@@ -28,7 +28,13 @@ class ViewController: UIViewController {
                 self.performSegue(withIdentifier: "segueLogin", sender: self)
             } else {
                 self.getCurrentUserDictionary(handler: { (succeed, dictionary) in
-                    self.navigationItem.title = dictionary!["username"] as? String
+                    
+                    if let dictionary = dictionary {
+                        self.navigationItem.title = dictionary["username"] as? String
+                    } else {
+                        print("There was an error getting dictionary")
+                    }
+                    
                 })
             }
         }

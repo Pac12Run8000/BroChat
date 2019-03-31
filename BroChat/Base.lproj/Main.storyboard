@@ -77,7 +77,7 @@
                                     <constraint firstItem="Mjt-mD-HaU" firstAttribute="leading" secondItem="5hR-vr-yaK" secondAttribute="leading" id="vPU-Dm-JT5"/>
                                 </constraints>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NrA-fN-EiW">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NrA-fN-EiW">
                                 <rect key="frame" x="112.5" y="45" width="150" height="150"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="150" id="ISm-vq-Pbc"/>
