@@ -42,7 +42,7 @@
                                         </constraints>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" returnKeyType="continue" textContentType="name"/>
+                                        <textInputTraits key="textInputTraits" keyboardAppearance="alert" returnKeyType="continue" textContentType="name"/>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="IS0-W6-mws">
                                         <rect key="frame" x="0.0" y="45" width="345" height="35"/>
@@ -51,7 +51,7 @@
                                         </constraints>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" returnKeyType="continue" textContentType="email"/>
+                                        <textInputTraits key="textInputTraits" keyboardAppearance="alert" returnKeyType="continue" textContentType="email"/>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5dP-BY-pzk">
                                         <rect key="frame" x="0.0" y="90" width="345" height="35"/>
@@ -60,7 +60,7 @@
                                         </constraints>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" returnKeyType="continue" secureTextEntry="YES"/>
+                                        <textInputTraits key="textInputTraits" keyboardAppearance="alert" returnKeyType="continue" secureTextEntry="YES"/>
                                     </textField>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -94,6 +94,10 @@
                                 <color key="textColor" red="0.12549019607843137" green="0.30588235294117649" blue="0.37254901960784315" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <activityIndicatorView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="IxN-tu-FhR">
+                                <rect key="frame" x="169" y="315" width="37" height="37"/>
+                                <color key="color" red="0.12549019610000001" green="0.30588235289999999" blue="0.37254901959999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -101,11 +105,13 @@
                             <constraint firstItem="Xp6-ca-D7p" firstAttribute="trailing" secondItem="dgv-oI-y8v" secondAttribute="trailing" constant="15" id="1Rt-yY-ybb"/>
                             <constraint firstItem="l8W-UZ-VyJ" firstAttribute="leading" secondItem="LhT-NE-oEa" secondAttribute="leading" constant="15" id="Jns-f3-xEi"/>
                             <constraint firstItem="5hR-vr-yaK" firstAttribute="top" secondItem="dgv-oI-y8v" secondAttribute="bottom" constant="10" id="UGr-49-9BS"/>
+                            <constraint firstItem="IxN-tu-FhR" firstAttribute="centerY" secondItem="LhT-NE-oEa" secondAttribute="centerY" id="W5x-OL-kwx"/>
                             <constraint firstItem="dgv-oI-y8v" firstAttribute="top" secondItem="NrA-fN-EiW" secondAttribute="bottom" constant="25" id="XM2-ao-TyJ"/>
                             <constraint firstItem="NrA-fN-EiW" firstAttribute="centerX" secondItem="LhT-NE-oEa" secondAttribute="centerX" id="aMQ-mp-kIl"/>
                             <constraint firstItem="Xp6-ca-D7p" firstAttribute="trailing" secondItem="l8W-UZ-VyJ" secondAttribute="trailing" constant="15" id="fd4-KV-nPe"/>
                             <constraint firstItem="Xp6-ca-D7p" firstAttribute="trailing" secondItem="5hR-vr-yaK" secondAttribute="trailing" constant="15" id="jAo-8v-7uq"/>
                             <constraint firstItem="dgv-oI-y8v" firstAttribute="centerX" secondItem="LhT-NE-oEa" secondAttribute="centerX" id="mtJ-fU-K9O"/>
+                            <constraint firstItem="IxN-tu-FhR" firstAttribute="centerX" secondItem="LhT-NE-oEa" secondAttribute="centerX" id="oks-8L-l0i"/>
                             <constraint firstItem="5hR-vr-yaK" firstAttribute="leading" secondItem="Xp6-ca-D7p" secondAttribute="leading" constant="15" id="otk-qV-XY0"/>
                             <constraint firstItem="NrA-fN-EiW" firstAttribute="top" secondItem="Xp6-ca-D7p" secondAttribute="top" constant="25" id="qg9-Bp-Ies"/>
                             <constraint firstItem="l8W-UZ-VyJ" firstAttribute="top" secondItem="Xp6-ca-D7p" secondAttribute="top" constant="25" id="qpw-Eh-DHM"/>
@@ -113,6 +119,7 @@
                         <viewLayoutGuide key="safeArea" id="Xp6-ca-D7p"/>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="IxN-tu-FhR" id="Yop-Sw-AlS"/>
                         <outlet property="emailOutlet" destination="IS0-W6-mws" id="rCB-FS-9gR"/>
                         <outlet property="errorLabelOutlet" destination="l8W-UZ-VyJ" id="b0Z-Yt-e71"/>
                         <outlet property="imageView" destination="NrA-fN-EiW" id="ku9-Xe-SuM"/>

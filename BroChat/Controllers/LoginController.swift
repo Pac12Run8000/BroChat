@@ -21,8 +21,9 @@ class LoginController: UIViewController {
     @IBOutlet weak var emailOutlet: UITextField!
     @IBOutlet weak var passwordOutlet: UITextField!
     @IBOutlet weak var errorLabelOutlet: UILabel!
-    
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -153,7 +154,7 @@ extension LoginController {
     
     
     private func registerIntoFirebase(imageView:UIImageView, usernameTextField:UITextField, emailTextField:UITextField, passwordTextField:UITextField) {
-        
+        activityIndicator.startAnimating()
         guard let profileImage = imageView.image else {
             self.displayLabelForErrors(label: self.errorLabelOutlet, msg: "Add an image for your profile.")
             return
@@ -210,6 +211,7 @@ extension LoginController {
                                 print("error:\(error?.localizedDescription)")
                                 return
                             }
+                            self.activityIndicator.stopAnimating()
                             self.dismiss(animated: true, completion: nil)
                         })
                         
