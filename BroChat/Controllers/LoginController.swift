@@ -154,7 +154,10 @@ extension LoginController {
     
     
     private func registerIntoFirebase(imageView:UIImageView, usernameTextField:UITextField, emailTextField:UITextField, passwordTextField:UITextField) {
+        
         activityIndicator.startAnimating()
+        UIApplication.shared.beginIgnoringInteractionEvents()
+        
         guard let profileImage = imageView.image else {
             self.displayLabelForErrors(label: self.errorLabelOutlet, msg: "Add an image for your profile.")
             return
@@ -196,7 +199,7 @@ extension LoginController {
                             return
                         }
                         
-                        guard let absoluteString = url?.absoluteString else {
+                        guard (url?.absoluteString) != nil else {
                             print("There was an error with absolute string.")
                             return
                         }
@@ -208,9 +211,11 @@ extension LoginController {
                         let values = ["username": username, "email":email, "profileImageUrl":url?.absoluteString] as [String : AnyObject]
                         usersRef.updateChildValues(values, withCompletionBlock: { (error, reference) in
                             if (error != nil) {
-                                print("error:\(error?.localizedDescription)")
+                                print("error:\(String(describing: error?.localizedDescription))")
                                 return
                             }
+                            
+                            UIApplication.shared.endIgnoringInteractionEvents()
                             self.activityIndicator.stopAnimating()
                             self.dismiss(animated: true, completion: nil)
                         })
