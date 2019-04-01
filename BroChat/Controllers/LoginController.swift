@@ -246,14 +246,12 @@ extension LoginController {
             
             guard error == nil else {
                 
-                if let errLocalizedDescription = error?.localizedDescription {
-                    print("My Error:\(errLocalizedDescription)")
-                    self.displayLabelForErrors(label: self.errorLabelOutlet, msg: errLocalizedDescription)
+                if ((error as! NSError).code == 17020) {
+                    self.presentError()
                 } else {
                     print("There was a problem wih the login.")
                     self.displayLabelForErrors(label: self.errorLabelOutlet, msg: "There was a problem wih the login.")
                 }
-                
                 return
             }
             
@@ -270,6 +268,17 @@ extension LoginController {
             self.dismiss(animated: true , completion: nil)
         }
     }
+    
+    
+    func presentError() {
+        var alertControl = UIAlertController(title: "Bad network conditions.", message: "Connection timed out. Try again later.", preferredStyle: .alert)
+        alertControl.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in
+            
+        }))
+        
+        present(alertControl, animated: true, completion: nil)
+    }
+    
     
 }
 
