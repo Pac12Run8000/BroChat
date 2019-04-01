@@ -181,7 +181,11 @@ extension LoginController {
         Auth.auth().createUser(withEmail: emailTextField.text!, password: passwordTextField.text!) { (result, error) in
             
             if (error != nil) {
-                print("error:\(error?.localizedDescription)")
+                if ((error as! NSError).code == 17007) {
+                    self.activityIndicator.stopAnimating()
+                    self.presentNetworkError(msg: "The email address is already in use by another account.")
+                }
+                
                 if ((error as! NSError).code == 17020) {
                     self.activityIndicator.stopAnimating()
                     self.presentNetworkError()
@@ -253,7 +257,6 @@ extension LoginController {
             guard error == nil else {
                  self.activityIndicator.stopAnimating()
                 if ((error as! NSError).code == 17020) {
-                   
                     self.presentNetworkError()
                 } else {
                     print("There was a problem wih the login.")
@@ -363,8 +366,17 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
 // MARK:- UIAlertController functionality
 extension LoginController {
     
-    private func presentNetworkError() {
-        var alertControl = UIAlertController(title: "Bad network conditions.", message: "Connection timed out. Try again later.", preferredStyle: .alert)
+    private func presentNetworkError(msg:String? = nil) {
+        var title:String?
+        var message:String?
+        if (msg == nil) {
+            title = "Bad network conditions."
+            message = "Connection timed out. Try again later."
+        } else {
+            title = "Error"
+            message = msg
+        }
+        var alertControl = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertControl.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in
             
         }))
