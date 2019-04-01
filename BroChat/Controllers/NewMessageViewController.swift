@@ -69,6 +69,8 @@ extension NewMessageViewController:UITableViewDelegate, UITableViewDataSource {
             }
         }
         
+        cell?.userObj = user
+        
         return cell!
     }
     

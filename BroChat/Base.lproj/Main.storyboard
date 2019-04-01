@@ -159,14 +159,38 @@
                                                         <constraint firstAttribute="height" constant="70" id="ttL-d9-Zc1"/>
                                                     </constraints>
                                                 </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UYu-KW-CJo">
+                                                    <rect key="frame" x="100" y="16" width="270" height="35"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="35" id="shL-dJ-zIr"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zRR-dI-lxc">
+                                                    <rect key="frame" x="100" y="56" width="265" height="28.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <color key="backgroundColor" red="1" green="0.76887007200000002" blue="0.74726461340000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="zRR-dI-lxc" secondAttribute="trailing" constant="10" id="6FB-Pi-neA"/>
+                                                <constraint firstAttribute="bottom" secondItem="zRR-dI-lxc" secondAttribute="bottom" constant="5" id="6Iw-sA-IpQ"/>
                                                 <constraint firstItem="046-Kc-YIf" firstAttribute="leading" secondItem="dhm-zM-fCm" secondAttribute="leadingMargin" constant="5" id="H9c-Mu-65W"/>
+                                                <constraint firstItem="UYu-KW-CJo" firstAttribute="leading" secondItem="046-Kc-YIf" secondAttribute="trailing" constant="10" id="Jil-WX-bwM"/>
+                                                <constraint firstItem="zRR-dI-lxc" firstAttribute="leading" secondItem="046-Kc-YIf" secondAttribute="trailing" constant="10" id="LCf-r6-Wp5"/>
+                                                <constraint firstItem="zRR-dI-lxc" firstAttribute="top" secondItem="UYu-KW-CJo" secondAttribute="bottom" constant="5" id="VXL-fZ-ICZ"/>
                                                 <constraint firstItem="046-Kc-YIf" firstAttribute="centerY" secondItem="dhm-zM-fCm" secondAttribute="centerY" id="X4A-oc-oRH"/>
+                                                <constraint firstItem="UYu-KW-CJo" firstAttribute="trailing" secondItem="dhm-zM-fCm" secondAttribute="trailingMargin" constant="10" id="blc-rA-cUa"/>
+                                                <constraint firstItem="UYu-KW-CJo" firstAttribute="top" secondItem="dhm-zM-fCm" secondAttribute="topMargin" constant="5" id="pYU-ha-iug"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="emailLabel" destination="zRR-dI-lxc" id="Z8F-be-kuQ"/>
+                                            <outlet property="nameLabel" destination="UYu-KW-CJo" id="nKQ-iA-tHr"/>
                                             <outlet property="profileImageView" destination="046-Kc-YIf" id="VN2-P3-ywf"/>
                                         </connections>
                                     </tableViewCell>
