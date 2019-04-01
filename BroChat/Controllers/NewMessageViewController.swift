@@ -98,7 +98,7 @@ extension NewMessageViewController {
             let myUser = User()
             myUser.username = user["username"] as? String
             myUser.email = user["email"] as? String
-
+            myUser.profileImageUrl = user["profileImageUrl"] as? String
             self.users.append(myUser)
 
             DispatchQueue.main.async {

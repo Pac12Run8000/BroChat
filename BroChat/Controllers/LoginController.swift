@@ -189,7 +189,7 @@ extension LoginController {
                 return
             }
             // MARK:- Storage functionality
-            let storageRef = Storage.storage().reference().child("\(NSUUID().uuidString).png")
+            let storageRef = Storage.storage().reference().child("profileImages").child("\(NSUUID().uuidString).png")
             storageRef.putData((imageView.image?.pngData())!, metadata: nil
                 , completion: { (metaData, error) in
                     if (error != nil) {
