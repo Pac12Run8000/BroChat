@@ -247,7 +247,7 @@ extension LoginController {
             guard error == nil else {
                 
                 if ((error as! NSError).code == 17020) {
-                    self.presentError()
+                    self.presentNetworkError()
                 } else {
                     print("There was a problem wih the login.")
                     self.displayLabelForErrors(label: self.errorLabelOutlet, msg: "There was a problem wih the login.")
@@ -268,17 +268,6 @@ extension LoginController {
             self.dismiss(animated: true , completion: nil)
         }
     }
-    
-    
-    func presentError() {
-        var alertControl = UIAlertController(title: "Bad network conditions.", message: "Connection timed out. Try again later.", preferredStyle: .alert)
-        alertControl.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in
-            
-        }))
-        
-        present(alertControl, animated: true, completion: nil)
-    }
-    
     
 }
 
@@ -362,6 +351,19 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
         dismiss(animated: true, completion: nil)
     }
     
+}
+
+// MARK:- UIAlertController functionality
+extension LoginController {
+    
+    private func presentNetworkError() {
+        var alertControl = UIAlertController(title: "Bad network conditions.", message: "Connection timed out. Try again later.", preferredStyle: .alert)
+        alertControl.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in
+            
+        }))
+        
+        present(alertControl, animated: true, completion: nil)
+    }
 }
 
 
