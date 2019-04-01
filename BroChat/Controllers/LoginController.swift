@@ -156,7 +156,7 @@ extension LoginController {
     private func registerIntoFirebase(imageView:UIImageView, usernameTextField:UITextField, emailTextField:UITextField, passwordTextField:UITextField) {
         
         activityIndicator.startAnimating()
-        UIApplication.shared.beginIgnoringInteractionEvents()
+        
         
         guard let profileImage = imageView.image else {
             self.displayLabelForErrors(label: self.errorLabelOutlet, msg: "Add an image for your profile.")
@@ -182,6 +182,10 @@ extension LoginController {
             
             if (error != nil) {
                 print("error:\(error?.localizedDescription)")
+                if ((error as! NSError).code == 17020) {
+                    self.activityIndicator.stopAnimating()
+                    self.presentNetworkError()
+                }
                 return
             }
             // MARK:- Storage functionality
@@ -215,7 +219,7 @@ extension LoginController {
                                 return
                             }
                             
-                            UIApplication.shared.endIgnoringInteractionEvents()
+                            
                             self.activityIndicator.stopAnimating()
                             self.dismiss(animated: true, completion: nil)
                         })
@@ -230,6 +234,8 @@ extension LoginController {
     }
     
     private func loginToFirebase(emailOutletText:UITextField, passwordOutletText:UITextField) {
+        self.activityIndicator.startAnimating()
+        
         guard let email = emailOutletText.text, isValidEmailAddress(testStr: email) else {
             print("Email is not valid")
             self.displayLabelForErrors(label: self.errorLabelOutlet, msg: "Email is not valid")
@@ -245,8 +251,9 @@ extension LoginController {
         Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
             
             guard error == nil else {
-                
+                 self.activityIndicator.stopAnimating()
                 if ((error as! NSError).code == 17020) {
+                   
                     self.presentNetworkError()
                 } else {
                     print("There was a problem wih the login.")
@@ -263,7 +270,7 @@ extension LoginController {
             }
             
             
-            
+            self.activityIndicator.stopAnimating()
             
             self.dismiss(animated: true , completion: nil)
         }
