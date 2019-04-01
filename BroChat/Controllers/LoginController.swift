@@ -136,7 +136,8 @@ extension LoginController:UITextFieldDelegate {
             self.loginToFirebase(emailOutletText: emailOutlet, passwordOutletText: passwordOutlet)
         case LoginState.Register.rawValue:
             print("Registering")
-            self.sanityCheckingWithRegistrationIntoFirebase(usernameField: usernameOutlet, emailField: emailOutlet, passwordField: passwordOutlet)
+//            self.sanityCheckingWithRegistrationIntoFirebase(usernameField: usernameOutlet, emailField: emailOutlet, passwordField: passwordOutlet)
+            self.registerIntoFirebase(imageView: imageView, usernameTextField: usernameOutlet, emailTextField: emailOutlet, passwordTextField: passwordOutlet)
         default:
             print("do nothing")
         }
@@ -150,6 +151,71 @@ extension LoginController:UITextFieldDelegate {
 
 // MARK:- Firebase Registration functionality and Login funtionality
 extension LoginController {
+    
+    
+    private func registerIntoFirebase(imageView:UIImageView, usernameTextField:UITextField, emailTextField:UITextField, passwordTextField:UITextField) {
+        
+        guard let profileImage = imageView.image else {
+            self.displayLabelForErrors(label: self.errorLabelOutlet, msg: "Add an image for your profile.")
+            return
+        }
+        
+        guard let username = usernameTextField.text, username != "", !username.isEmpty else {
+            self.displayLabelForErrors(label: self.errorLabelOutlet, msg: "Enter a username.")
+            return
+        }
+        
+        guard let email = emailTextField.text, let isValidEmail = isValidEmailAddress(testStr: email) as? Bool, isValidEmail == true else {
+            self.displayLabelForErrors(label: self.errorLabelOutlet, msg: "Email is not valid")
+            return
+        }
+
+        guard let password = passwordTextField.text, !password.isEmpty, password.count >= 6 else {
+            self.displayLabelForErrors(label: self.errorLabelOutlet, msg: "The password needs to have 6 or more characters.")
+            return
+        }
+        
+        Auth.auth().createUser(withEmail: emailTextField.text!, password: passwordTextField.text!) { (result, error) in
+            
+            if (error != nil) {
+                print("error:\(error?.localizedDescription)")
+                return
+            }
+
+            let storageRef = Storage.storage().reference().child("\(NSUUID().uuidString).png")
+            storageRef.putData((imageView.image?.pngData())!, metadata: nil
+                , completion: { (metaData, error) in
+                    if (error != nil) {
+                        print("error:\(error?.localizedDescription)")
+                        return
+                    }
+                    
+                    storageRef.downloadURL(completion: { (url, err) in
+                        if (err != nil) {
+                            print("error:\(err?.localizedDescription)")
+                            return
+                        }
+                        
+                        let userID = Auth.auth().currentUser?.uid as! String
+                        let ref = Database.database().reference()
+                        let usersRef = ref.child("users").child(userID)
+                        let values = ["username":usernameTextField.text, "email":emailTextField.text, "profileImageUrl":url?.absoluteString]
+                        usersRef.updateChildValues(values, withCompletionBlock: { (error, reference) in
+                            if (error != nil) {
+                                print("error:\(error?.localizedDescription)")
+                                return
+                            }
+                            self.dismiss(animated: true, completion: nil)
+                        })
+                        
+                    })
+                   
+            })
+            
+            
+        }
+        
+    }
     
     private func loginToFirebase(emailOutletText:UITextField, passwordOutletText:UITextField) {
         guard let email = emailOutletText.text, isValidEmailAddress(testStr: email) else {
@@ -195,121 +261,121 @@ extension LoginController {
     
     
     
-    private func sanityCheckingWithRegistrationIntoFirebase(usernameField:UITextField, emailField:UITextField, passwordField:UITextField) {
-        
-        guard let profileImage = imageView.image, profileImage != nil else {
-            print("Add an image for your profile.")
-            self.displayLabelForErrors(label: self.errorLabelOutlet, msg: "Add an image for your profile.")
-            self.usernameOutlet.becomeFirstResponder()
-            return
-        }
-        
-        guard let usernameOutletText = usernameField.text, usernameOutletText != "", !usernameOutletText.isEmpty else {
-            print("Enter a value for username.")
-            self.displayLabelForErrors(label: self.errorLabelOutlet, msg: "Enter a username.")
-            return
-        }
-
-        guard let emailOutletText = emailField.text, let isValidEmail = isValidEmailAddress(testStr: emailOutletText) as? Bool, isValidEmail == true else {
-            print("Email is not valid")
-            self.displayLabelForErrors(label: self.errorLabelOutlet, msg: "Email is not valid")
-            return
-        }
-
-        guard let passwordOutletText = passwordField.text, !passwordOutletText.isEmpty, passwordOutletText.count >= 6 else {
-            print("The password needs to have 6 or more characters.")
-            self.displayLabelForErrors(label: self.errorLabelOutlet, msg: "The password needs to have 6 or more characters.")
-            return
-        }
-
-        registerIntoFirebase(username: usernameOutletText, emailAddress:emailOutletText, password: passwordOutletText, profileImage: profileImage) { (success, error, name) in
-            if (success!) {
-                self.dismiss(animated: true, completion: nil)
-            }
-        }
-        
-    }
-    
-    
-    
-    private func registerIntoFirebase(username:String?, emailAddress:String?, password:String, profileImage:UIImage, completionHandler:@escaping(_ succeed:Bool?,_ error:Error?,_ username:String?) -> ()) {
-        
-        if let email = emailAddress, let password = password as? String, let username = username as? String, let profileImage = profileImage as? UIImage {
-            
-            Auth.auth().createUser(withEmail: email, password: password) { (result, error) in
-                guard error == nil else {
-                    print("Error:\(String(describing: error?.localizedDescription))")
-                    completionHandler(false, error, username)
-                    return
-                }
-                
-                // MARK:- This is where storage happens ****************************
-//                print("Profile Image Added:\(profileImage)")
+//    private func sanityCheckingWithRegistrationIntoFirebase(usernameField:UITextField, emailField:UITextField, passwordField:UITextField) {
 //
-                guard let uploadData = profileImage.pngData() else {
-                    print("There was no upload data")
-                    return
-                }
-
-                guard let storageRef = self.retrieveStorageRef() else {
-                    print("Couldn't retrieve storage reference.")
-                    return
-                }
-                // MARK:- This is the image Storage function
-                storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
-                    if (error != nil) {
-                        print("There was an error: \(error?.localizedDescription)")
-                        return
-                    }
-                    
-                    storageRef.downloadURL(completion: { (url, error) in
-                    if (error != nil) {
-                        print("couldn't get downoad url")
-                        return
-                    }
-                    
-//                    print("url:\(url?.absoluteString)")
-                        
-                        
-                })
-                    
-                })
-                // ****************************************************************
-                
-                self.storeUserDataIntoFirebaseDatabase(usernameStr: username, emailStr: email, completionHandler: { (succeed, err) in
-                    if (succeed) {
-                        print("Information was saved to Firebase database")
-                    }
-                })
-                
-                
-                
-                completionHandler(true, nil, username)
-            }
-        }
-    }
+//        guard let profileImage = imageView.image, profileImage != nil else {
+//            print("Add an image for your profile.")
+//            self.displayLabelForErrors(label: self.errorLabelOutlet, msg: "Add an image for your profile.")
+//            self.usernameOutlet.becomeFirstResponder()
+//            return
+//        }
+//
+//        guard let usernameOutletText = usernameField.text, usernameOutletText != "", !usernameOutletText.isEmpty else {
+//            print("Enter a value for username.")
+//            self.displayLabelForErrors(label: self.errorLabelOutlet, msg: "Enter a username.")
+//            return
+//        }
+//
+//        guard let emailOutletText = emailField.text, let isValidEmail = isValidEmailAddress(testStr: emailOutletText) as? Bool, isValidEmail == true else {
+//            print("Email is not valid")
+//            self.displayLabelForErrors(label: self.errorLabelOutlet, msg: "Email is not valid")
+//            return
+//        }
+//
+//        guard let passwordOutletText = passwordField.text, !passwordOutletText.isEmpty, passwordOutletText.count >= 6 else {
+//            print("The password needs to have 6 or more characters.")
+//            self.displayLabelForErrors(label: self.errorLabelOutlet, msg: "The password needs to have 6 or more characters.")
+//            return
+//        }
+//
+//        registerIntoFirebase(username: usernameOutletText, emailAddress:emailOutletText, password: passwordOutletText, profileImage: profileImage) { (success, error, name) in
+//            if (success!) {
+//                self.dismiss(animated: true, completion: nil)
+//            }
+//        }
+//
+//    }
     
-    private func storeUserDataIntoFirebaseDatabase(usernameStr:String, emailStr:String, completionHandler:@escaping (_ success:Bool, _ er:Error?) -> ()) {
-        
-        guard let userID = Auth.auth().currentUser?.uid else {
-            print("There was an error getting the userId")
-            return
-        }
-        
-        let ref = Database.database().reference()
-        let usersReference = ref.child("users").child(userID)
-        let values = ["username":usernameStr, "email":emailStr]
-        usersReference.updateChildValues(values, withCompletionBlock: { (err, reference) in
-            guard err == nil else {
-                print("Error saving to Firebase Database.")
-                completionHandler(false, err)
-                return
-            }
-            completionHandler(true, nil)
-            
-            
-        })
-    }
+    
+    
+//    private func registerIntoFirebase(username:String?, emailAddress:String?, password:String, profileImage:UIImage, completionHandler:@escaping(_ succeed:Bool?,_ error:Error?,_ username:String?) -> ()) {
+//
+//        if let email = emailAddress, let password = password as? String, let username = username as? String, let profileImage = profileImage as? UIImage {
+//
+//            Auth.auth().createUser(withEmail: email, password: password) { (result, error) in
+//                guard error == nil else {
+//                    print("Error:\(String(describing: error?.localizedDescription))")
+//                    completionHandler(false, error, username)
+//                    return
+//                }
+//
+//                // MARK:- This is where storage happens ****************************
+////                print("Profile Image Added:\(profileImage)")
+////
+//                guard let uploadData = profileImage.pngData() else {
+//                    print("There was no upload data")
+//                    return
+//                }
+//
+//                guard let storageRef = self.retrieveStorageRef() else {
+//                    print("Couldn't retrieve storage reference.")
+//                    return
+//                }
+//                // MARK:- This is the image Storage function
+//                storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
+//                    if (error != nil) {
+//                        print("There was an error: \(error?.localizedDescription)")
+//                        return
+//                    }
+//
+//                    storageRef.downloadURL(completion: { (url, error) in
+//                    if (error != nil) {
+//                        print("couldn't get downoad url")
+//                        return
+//                    }
+//
+////                    print("url:\(url?.absoluteString)")
+//
+//
+//                })
+//
+//                })
+//                // ****************************************************************
+//
+//                self.storeUserDataIntoFirebaseDatabase(usernameStr: username, emailStr: email, completionHandler: { (succeed, err) in
+//                    if (succeed) {
+//                        print("Information was saved to Firebase database")
+//                    }
+//                })
+//
+//
+//
+//                completionHandler(true, nil, username)
+//            }
+//        }
+//    }
+    
+//    private func storeUserDataIntoFirebaseDatabase(usernameStr:String, emailStr:String, completionHandler:@escaping (_ success:Bool, _ er:Error?) -> ()) {
+//
+//        guard let userID = Auth.auth().currentUser?.uid else {
+//            print("There was an error getting the userId")
+//            return
+//        }
+//
+//        let ref = Database.database().reference()
+//        let usersReference = ref.child("users").child(userID)
+//        let values = ["username":usernameStr, "email":emailStr]
+//        usersReference.updateChildValues(values, withCompletionBlock: { (err, reference) in
+//            guard err == nil else {
+//                print("Error saving to Firebase Database.")
+//                completionHandler(false, err)
+//                return
+//            }
+//            completionHandler(true, nil)
+//
+//
+//        })
+//    }
     
     
 }
@@ -366,19 +432,19 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
     
 
     
-    private func retrieveStorageRef() -> StorageReference? {
-        let uniqueImageName = self.generateUniqueFilename(type: .PNG)
-        return Storage.storage().reference().child("\(uniqueImageName)")
-    }
-    
-    enum FileType:String {
-        case PNG = ".png"
-        case JPG = ".jpg"
-    }
-    
-    private func generateUniqueFilename(type:FileType) -> String {
-        return "\(NSUUID().uuidString)\(type.rawValue)"
-    }
+//    private func retrieveStorageRef() -> StorageReference? {
+//        let uniqueImageName = self.generateUniqueFilename(type: .PNG)
+//        return Storage.storage().reference().child("\(uniqueImageName)")
+//    }
+//
+//    enum FileType:String {
+//        case PNG = ".png"
+//        case JPG = ".jpg"
+//    }
+//
+//    private func generateUniqueFilename(type:FileType) -> String {
+//        return "\(NSUUID().uuidString)\(type.rawValue)"
+//    }
     
     private func setupGestureRecognizerForImageView() {
         imageView.isUserInteractionEnabled = true
