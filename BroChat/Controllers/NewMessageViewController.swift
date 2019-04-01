@@ -33,6 +33,8 @@ class NewMessageViewController: UIViewController {
         databaseHandle = ref?.child("users").observe(.childAdded, with: { (snapshot) in
             self.processSnapShot(mySnapshot: snapshot)
         })
+        
+        tableView.separatorColor = UIColor.customDarkBlue
     }
     
     
@@ -56,12 +58,26 @@ extension NewMessageViewController:UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         
-        cell.textLabel?.text = users[indexPath.row].username
-        cell.detailTextLabel?.text = users[indexPath.row].email
+        let user = users[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? CustomCell
         
-        return cell
+       
+        if let profileImageUrl = user.profileImageUrl, let url = URL(string: profileImageUrl) {
+            ImageService.downloadAndCacheImage(withUrl: url) { (succees, image, error) in
+                cell?.profileImageView.image = image
+            }
+        }
+        
+        return cell!
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 90.0
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     
