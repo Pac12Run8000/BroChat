@@ -12,7 +12,12 @@ class ImageService {
     
     static let cache = NSCache<NSString, UIImage>()
     
-    static func downloadAndCacheImage(withUrl:URL, completionHandler:@escaping(_ success:Bool?, _ image:UIImage?, _ error:Error?) -> ()) {
+    static func downloadAndCacheImage(withUrl:URL, completionHandler:@escaping(_ success:Bool, _ image:UIImage?, _ error:Error?) -> ()) {
+        
+        if let image = cache.object(forKey: withUrl.absoluteString as NSString) {
+            completionHandler(true, image, nil)
+            return
+        }
         
         let dataTask = URLSession.shared.dataTask(with: withUrl) { (data, response, error) in
             

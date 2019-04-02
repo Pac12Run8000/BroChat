@@ -66,7 +66,9 @@ extension NewMessageViewController:UITableViewDelegate, UITableViewDataSource {
        
         if let profileImageUrl = user.profileImageUrl, let url = URL(string: profileImageUrl) {
             ImageService.downloadAndCacheImage(withUrl: url) { (succees, image, error) in
-                cell?.profileImageView.image = image
+                if (succees) {
+                    cell?.profileImageView.image = image
+                }
             }
         }
         
