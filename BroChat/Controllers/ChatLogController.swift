@@ -7,7 +7,8 @@
 //
 
 import UIKit
-import Firebase
+import FirebaseAuth
+import FirebaseDatabase
 
 class ChatLogController: UIViewController {
     
@@ -28,7 +29,7 @@ class ChatLogController: UIViewController {
     }
     
     @IBAction func sendButtonAction(_ sender: Any) {
-        print(sendTextFieldOutlet.text)
+        sendMessageData()
     }
     
     
@@ -75,6 +76,11 @@ extension ChatLogController: UITextFieldDelegate {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         sendTextFieldOutlet.resignFirstResponder()
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        sendMessageData()
+        return true
+    }
 }
 
 extension ChatLogController {
@@ -115,4 +121,20 @@ extension ChatLogController {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
         
     }
+}
+// MARK:- Firebase functionality
+extension ChatLogController {
+    
+    private func sendMessageData() {
+        guard let sendText = sendTextFieldOutlet.text, !sendText.isEmpty, sendText != "" else {
+            print("There is no text")
+            return
+        }
+        let ref = Database.database().reference().child("messages")
+        let childRef = ref.childByAutoId()
+        let values = ["text": sendText]
+        childRef.updateChildValues(values)
+        sendTextFieldOutlet.text = ""
+    }
+    
 }
