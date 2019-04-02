@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class ChatLogController: UIViewController {
     
@@ -25,6 +26,12 @@ class ChatLogController: UIViewController {
         subscribeToKeyboardNotifications()
         
     }
+    
+    @IBAction func sendButtonAction(_ sender: Any) {
+        print(sendTextFieldOutlet.text)
+    }
+    
+    
     
     deinit {
         unsubscribeToKeyboardNotifications()
