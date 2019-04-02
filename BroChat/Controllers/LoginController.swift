@@ -160,21 +160,25 @@ extension LoginController {
         
         guard let profileImage = imageView.image else {
             self.displayLabelForErrors(label: self.errorLabelOutlet, msg: "Add an image for your profile.")
+            activityIndicator.stopAnimating()
             return
         }
         
         guard let username = usernameTextField.text, username != "", !username.isEmpty else {
             self.displayLabelForErrors(label: self.errorLabelOutlet, msg: "Enter a username.")
+            activityIndicator.stopAnimating()
             return
         }
         
         guard let email = emailTextField.text, let isValidEmail = isValidEmailAddress(testStr: email) as? Bool, isValidEmail == true else {
             self.displayLabelForErrors(label: self.errorLabelOutlet, msg: "Email is not valid")
+            activityIndicator.stopAnimating()
             return
         }
 
         guard let password = passwordTextField.text, !password.isEmpty, password.count >= 6 else {
             self.displayLabelForErrors(label: self.errorLabelOutlet, msg: "The password needs to have 6 or more characters.")
+            activityIndicator.stopAnimating()
             return
         }
         // MARK:- Authentication functionality
@@ -194,7 +198,7 @@ extension LoginController {
             }
             // MARK:- Storage functionality
             let storageRef = Storage.storage().reference().child("profileImages").child("\(NSUUID().uuidString).png")
-            storageRef.putData((imageView.image?.pngData())!, metadata: nil
+            storageRef.putData((profileImage.pngData())!, metadata: nil
                 , completion: { (metaData, error) in
                     if (error != nil) {
                         print("error:\(error?.localizedDescription)")
