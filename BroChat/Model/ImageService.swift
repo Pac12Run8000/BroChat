@@ -24,14 +24,12 @@ class ImageService {
                 return
             }
             
-            downloadedImage = UIImage(data: data)
-            
-            if (downloadedImage == nil) {
-                cache.setObject(downloadedImage!, forKey: withUrl.absoluteString as NSString)
-            }
-            
             DispatchQueue.main.async {
-                completionHandler(true, downloadedImage, nil)
+                
+                if let downloadedImage = UIImage(data: data) {
+                    cache.setObject(downloadedImage, forKey: withUrl.absoluteString as NSString)
+                    completionHandler(true, downloadedImage, nil)
+                }
             }
             
         }
@@ -39,27 +37,5 @@ class ImageService {
         
     }
     
-//    static func downloadImage(withUrl:URL, completionHandler:@escaping(_ success:Bool?, _ image:UIImage?, _ error:Error?) ->()) {
-//        let dataTask = URLSession.shared.dataTask(with: withUrl) { (data, response, err) in
-//            var downloadedImage:UIImage?
-//
-//            guard let data = data else {
-//                print("No data ...")
-//                completionHandler(false, nil, nil)
-//                return
-//            }
-//            downloadedImage = UIImage(data: data)
-//
-//            if (downloadedImage != nil) {
-//                cache.setObject(downloadedImage!, forKey: withUrl.absoluteString as NSString)
-//            }
-//
-//            DispatchQueue.main.async {
-//                completionHandler(true, downloadedImage, nil)
-//            }
-//
-//        }
-//        dataTask.resume()
-//
-//    }
+
 }
