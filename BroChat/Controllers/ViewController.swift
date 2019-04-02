@@ -57,6 +57,11 @@ class ViewController: UIViewController {
         
     }
     
+    @IBAction func chatButtonAction(_ sender: Any) {
+        performSegue(withIdentifier: "segueChatLog", sender: self)
+    }
+    
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
