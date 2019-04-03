@@ -129,10 +129,10 @@ extension ViewController {
 // MARK:- NewMessageDelegate functionality
 extension ViewController:NewMessagesControllerDelegate {
     func dismissNewMessagePresentChatlog(_ controller: NewMessageViewController, user:User) {
-        let myUser = User()
-        myUser.username = user.username
         
-        currentUser = myUser
+        currentUser = user
+        
+        
         dismiss(animated: true) {
             self.performSegue(withIdentifier: "segueChatLog", sender: self)
         }
