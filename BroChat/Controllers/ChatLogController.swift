@@ -20,7 +20,7 @@ class ChatLogController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.title = "Chat Log"
+//        navigationItem.title = "Chat Log"
         setupSendButton()
         setupSendTextField()
         sendView.backgroundColor = UIColor.customDarkBlue

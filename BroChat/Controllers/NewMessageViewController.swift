@@ -95,9 +95,7 @@ extension NewMessageViewController:UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         
         newMessagesControllerDelegate?.dismissNewMessagePresentChatlog(self)
-//        dismiss(animated: true) {
-//
-//        }
+
     }
     
    

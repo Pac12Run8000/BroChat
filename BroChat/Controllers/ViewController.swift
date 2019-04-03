@@ -131,9 +131,8 @@ extension ViewController:NewMessagesControllerDelegate {
             self.performSegue(withIdentifier: "segueChatLog", sender: self)
         }
     }
-    
-    
 }
+
 // MARK:- Prepare for segue
 extension ViewController {
     
@@ -141,9 +140,18 @@ extension ViewController {
         if (segue.identifier == "newMsgSegue") {
             if let controller = (segue.destination as! UINavigationController).viewControllers.first as? NewMessageViewController {
                 controller.newMessagesControllerDelegate = self
+                
             }
         }
+        
+        if (segue.identifier == "segueChatLog") {
+            let controller = segue.destination as? ChatLogController
+            controller!.navigationItem.title = "Blah"
+            
+        }
     }
+    
+    
 }
 
 
