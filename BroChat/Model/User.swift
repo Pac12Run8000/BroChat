@@ -9,6 +9,7 @@
 import Foundation
 
 class User:NSObject {
+    var id:String?
     var email:String?
     var username:String?
     var profileImageUrl:String?

@@ -133,6 +133,7 @@ extension NewMessageViewController {
         if let user = mySnapshot.value as? [String:AnyObject] {
 
             let myUser = User()
+            myUser.id = mySnapshot.key
             myUser.username = user["username"] as? String
             myUser.email = user["email"] as? String
             myUser.profileImageUrl = user["profileImageUrl"] as? String

@@ -142,7 +142,8 @@ extension ChatLogController {
         }
         let ref = Database.database().reference().child("messages")
         let childRef = ref.childByAutoId()
-        let values = ["text": sendText]
+        let toId = user?.id
+        let values = ["text": sendText, "toId": toId]
         childRef.updateChildValues(values)
         sendTextFieldOutlet.text = ""
     }
