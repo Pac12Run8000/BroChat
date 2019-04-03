@@ -137,7 +137,6 @@ extension ViewController:NewMessagesControllerDelegate {
 // MARK:- Prepare for segue
 extension ViewController {
     
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "newMsgSegue") {
             if let controller = (segue.destination as! UINavigationController).viewControllers.first as? NewMessageViewController {
