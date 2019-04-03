@@ -140,10 +140,22 @@ extension ChatLogController {
             print("There is no text")
             return
         }
+        
+        guard let fromId = Auth.auth().currentUser?.uid else {
+            print("There is no fromId")
+            return
+        }
+        
+        guard let timestamp = Int(Date().timeIntervalSince1970) as? NSNumber else {
+            print("There is no timestamp")
+            return
+        }
+        
         let ref = Database.database().reference().child("messages")
         let childRef = ref.childByAutoId()
+        
         let toId = user?.id
-        let values = ["text": sendText, "toId": toId]
+        let values = ["text": sendText, "toId": toId, "fromId": fromId, "timestamp": timestamp] as [String : Any]
         childRef.updateChildValues(values)
         sendTextFieldOutlet.text = ""
     }
