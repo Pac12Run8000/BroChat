@@ -9,6 +9,12 @@
 import UIKit
 import FirebaseDatabase
 
+
+
+protocol NewMessagesControllerDelegate:class {
+    func dismissNewMessagePresentChatlog(_ controller:NewMessageViewController)
+}
+
 class NewMessageViewController: UIViewController {
     
     
@@ -20,7 +26,7 @@ class NewMessageViewController: UIViewController {
     
     var messagesController:ViewController?
     
-    
+    var newMessagesControllerDelegate:NewMessagesControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,9 +94,10 @@ extension NewMessageViewController:UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        dismiss(animated: true) {
-            
-        }
+        newMessagesControllerDelegate?.dismissNewMessagePresentChatlog(self)
+//        dismiss(animated: true) {
+//
+//        }
     }
     
    

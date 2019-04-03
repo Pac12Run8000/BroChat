@@ -123,3 +123,29 @@ extension ViewController {
         }
     }
 }
+
+// MARK:- NewMessageDelegate functionality
+extension ViewController:NewMessagesControllerDelegate {
+    func dismissNewMessagePresentChatlog(_ controller: NewMessageViewController) {
+        dismiss(animated: true) {
+            self.performSegue(withIdentifier: "segueChatLog", sender: self)
+        }
+    }
+    
+    
+}
+// MARK:- Prepare for segue
+extension ViewController {
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "newMsgSegue") {
+            if let controller = (segue.destination as! UINavigationController).viewControllers.first as? NewMessageViewController {
+                controller.newMessagesControllerDelegate = self
+            }
+        }
+    }
+}
+
+
+
