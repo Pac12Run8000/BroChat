@@ -60,6 +60,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func chatButtonAction(_ sender: Any) {
+        currentUser = nil
         performSegue(withIdentifier: "segueChatLog", sender: self)
     }
     
@@ -152,9 +153,8 @@ extension ViewController {
         
         if (segue.identifier == "segueChatLog") {
             let controller = segue.destination as? ChatLogController
-            if let username = currentUser?.username {
-                controller!.navigationItem.title = "\(username)"
-            }
+            controller?.user = currentUser
+
         }
     }
     

@@ -17,6 +17,16 @@ class ChatLogController: UIViewController {
     @IBOutlet weak var sendView: UIView!
     
     
+    var user:User? {
+        didSet {
+            if let username = user?.username {
+                navigationItem.title = "\(username)"
+            }
+        }
+        
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
