@@ -18,6 +18,8 @@ class NewMessageViewController: UIViewController {
     var users = [User]()
     var databaseHandle:DatabaseHandle?
     
+    var messagesController:ViewController?
+    
     
     
     override func viewDidLoad() {
@@ -81,9 +83,17 @@ extension NewMessageViewController:UITableViewDelegate, UITableViewDataSource {
         return 90.0
     }
     
+    
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        dismiss(animated: true) {
+            
+        }
     }
+    
+   
     
     
 }
