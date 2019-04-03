@@ -12,7 +12,7 @@ import FirebaseDatabase
 
 
 protocol NewMessagesControllerDelegate:class {
-    func dismissNewMessagePresentChatlog(_ controller:NewMessageViewController)
+    func dismissNewMessagePresentChatlog(_ controller:NewMessageViewController, user:User)
 }
 
 class NewMessageViewController: UIViewController {
@@ -93,8 +93,9 @@ extension NewMessageViewController:UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        let currenUser = users[indexPath.row]
         
-        newMessagesControllerDelegate?.dismissNewMessagePresentChatlog(self)
+        newMessagesControllerDelegate?.dismissNewMessagePresentChatlog(self, user: currenUser)
 
     }
     

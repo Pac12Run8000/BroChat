@@ -11,6 +11,8 @@ import FirebaseAuth
 import FirebaseDatabase
 
 class ViewController: UIViewController {
+    
+    var currentUser:User?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -126,7 +128,11 @@ extension ViewController {
 
 // MARK:- NewMessageDelegate functionality
 extension ViewController:NewMessagesControllerDelegate {
-    func dismissNewMessagePresentChatlog(_ controller: NewMessageViewController) {
+    func dismissNewMessagePresentChatlog(_ controller: NewMessageViewController, user:User) {
+        let myUser = User()
+        myUser.username = user.username
+        
+        currentUser = myUser
         dismiss(animated: true) {
             self.performSegue(withIdentifier: "segueChatLog", sender: self)
         }
@@ -138,16 +144,17 @@ extension ViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "newMsgSegue") {
+            
             if let controller = (segue.destination as! UINavigationController).viewControllers.first as? NewMessageViewController {
                 controller.newMessagesControllerDelegate = self
-                
             }
         }
         
         if (segue.identifier == "segueChatLog") {
             let controller = segue.destination as? ChatLogController
-            controller!.navigationItem.title = "Blah"
-            
+            if let username = currentUser?.username {
+                controller!.navigationItem.title = "\(username)"
+            }
         }
     }
     
