@@ -193,26 +193,26 @@ extension ViewController:UITableViewDelegate, UITableViewDataSource {
         let message = messages[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         
-        
-
-        
         if let toId = message.toId {
             
-            let ref = Database.database().reference().child("users").child(toId)
-            ref.observeSingleEvent(of: .value, with: { (snapshot) in
-                let dictionary = snapshot.value as? [String:AnyObject]
-
-                cell.textLabel?.text = dictionary!["username"] as? String
-            }, withCancel: nil)
+            convertToUserObj(toId: toId) { (user) in
+                if ((user) != nil) {
+                    cell.textLabel?.text = user?.username
+                } else {
+                    cell.textLabel?.text = "No name available"
+                }
+            }
             
         }
         
-
         
         
         cell.detailTextLabel?.text = message.text
         return cell
     }
+    
+    
+   
     
     
     
@@ -236,6 +236,20 @@ extension ViewController {
             }
            
         }, withCancel: nil)
+    }
+    
+    
+    private func convertToUserObj(toId:String, completionHandler:@escaping(_ user:User?) -> ()) {
+        
+        let ref = Database.database().reference().child("users").child(toId)
+        ref.observeSingleEvent(of: .value, with: { (snapshot) in
+            if let dictionary = snapshot.value as? [String:AnyObject] {
+                completionHandler(User.convertToUserObject(dictionary: dictionary))
+            } else {
+                completionHandler(nil)
+            }
+        }, withCancel: nil)
+        
     }
 }
 

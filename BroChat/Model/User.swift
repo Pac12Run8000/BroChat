@@ -13,4 +13,13 @@ class User:NSObject {
     var email:String?
     var username:String?
     var profileImageUrl:String?
+    
+    static func convertToUserObject(dictionary:[String:AnyObject]) -> User {
+        let user = User()
+        user.id = dictionary["id"] as? String
+        user.email = dictionary["email"] as? String
+        user.username = dictionary["username"] as? String
+        user.profileImageUrl = dictionary["profileImageUrl"] as? String
+        return user
+    }
 }
