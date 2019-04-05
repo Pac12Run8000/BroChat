@@ -12,6 +12,7 @@ class CustomMessageCell: UITableViewCell {
     
     @IBOutlet weak var userLabel: UILabel!
     @IBOutlet weak var CustomImageView: UIImageView!
+    @IBOutlet weak var messageLabelOutlet: UILabel!
     
     var userObj:User! {
         didSet {
@@ -23,9 +24,16 @@ class CustomMessageCell: UITableViewCell {
             }
         }
     }
+    
+    var messageObj:Message! {
+        didSet {
+            messageLabelOutlet.text = messageObj.text
+        }
+    }
 
     override func awakeFromNib() {
         super.awakeFromNib()
+       
         CustomImageView.image = UIImage(named: "addImage-3")
         CustomImageView.layer.cornerRadius = CustomImageView.frame.height / 2
         CustomImageView.layer.masksToBounds = true

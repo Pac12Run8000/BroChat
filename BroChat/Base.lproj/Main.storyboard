@@ -319,17 +319,30 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SQU-Vn-JLa">
+                                                    <rect key="frame" x="120" y="70" width="235" height="35"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="35" id="UiJ-WR-9In"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="SQU-Vn-JLa" secondAttribute="trailing" constant="5" id="7lH-XD-sti"/>
                                                 <constraint firstItem="FkR-BE-Te2" firstAttribute="centerY" secondItem="brw-JX-az3" secondAttribute="centerY" id="98J-8o-n8P"/>
+                                                <constraint firstItem="SQU-Vn-JLa" firstAttribute="top" secondItem="iDh-wT-GIW" secondAttribute="bottom" constant="5" id="bXY-iV-o89"/>
                                                 <constraint firstItem="FkR-BE-Te2" firstAttribute="leading" secondItem="brw-JX-az3" secondAttribute="leadingMargin" constant="5" id="c8E-ZL-qHc"/>
                                                 <constraint firstItem="iDh-wT-GIW" firstAttribute="leading" secondItem="FkR-BE-Te2" secondAttribute="trailing" constant="10" id="iBn-WO-37X"/>
                                                 <constraint firstItem="iDh-wT-GIW" firstAttribute="top" secondItem="brw-JX-az3" secondAttribute="top" constant="10" id="m37-hG-W6a"/>
+                                                <constraint firstItem="SQU-Vn-JLa" firstAttribute="leading" secondItem="FkR-BE-Te2" secondAttribute="trailing" constant="10" id="nk7-PQ-ZTG"/>
                                                 <constraint firstAttribute="trailing" secondItem="iDh-wT-GIW" secondAttribute="trailing" id="v39-XV-CUd"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="CustomImageView" destination="FkR-BE-Te2" id="mNh-Yt-BFi"/>
+                                            <outlet property="messageLabelOutlet" destination="SQU-Vn-JLa" id="uKD-GG-REz"/>
                                             <outlet property="userLabel" destination="iDh-wT-GIW" id="83t-aB-t8L"/>
                                         </connections>
                                     </tableViewCell>
