@@ -156,8 +156,26 @@ extension ChatLogController {
         
         let toId = user?.id
         let values = ["text": sendText, "toId": toId, "fromId": fromId, "timestamp": timestamp] as [String : Any]
-        childRef.updateChildValues(values)
+
+        childRef.updateChildValues(values) { (error, ref) in
+            if (error != nil) {
+                print("There was an error!!")
+                return
+            }
+            
+            let userMessageRef = Database.database().reference().child("user-messages").child(fromId)
+            
+            guard let messageId = childRef.key, let value = [messageId:1] as? [String:Int] else {
+                print("There was an error getting the values")
+                return
+            }
+            
+            userMessageRef.updateChildValues(value)
+            
+        }
         sendTextFieldOutlet.text = ""
+        
+        
     }
     
 }
