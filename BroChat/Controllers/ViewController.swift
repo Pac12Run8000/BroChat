@@ -15,6 +15,7 @@ class ViewController: UIViewController {
     var currentUser:User?
     @IBOutlet weak var tableView: UITableView!
     var messages = [Message]()
+    var messagesDictionary = [String:Message]()
     
     
     
@@ -224,7 +225,19 @@ extension ViewController {
             if let dictionary = snapshot.value as? [String:AnyObject] {
                 var message = Message()
                 message = Message.returnMessageObject(dictionary: dictionary)
-                self.messages.append(message)
+//                self.messages.append(message)
+                
+                if let toId = message.toId {
+                    self.messagesDictionary[toId] = message
+                    self.messages = Array(self.messagesDictionary.values)
+                    
+                    self.messages.sort(by: { (msg1, msg2) -> Bool in
+                        if let timestamp1 = msg1.timestamp?.intValue, let timestanmp2 = msg2.timestamp?.intValue {
+                                return timestamp1 > timestanmp2
+                        }
+                        return false
+                    })
+                }
                 
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
