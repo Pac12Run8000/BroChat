@@ -26,7 +26,7 @@ class ViewController: UIViewController {
         tableView.dataSource = self
 
         setupNavbar()
-        backgroundAttributes()
+
         ifLoggedOutGetLoginController { (isNil) in
             if (!isNil) {
                 self.getCurrentUserDictionary(handler: { (succeed, dictionary) in
@@ -35,8 +35,7 @@ class ViewController: UIViewController {
             }
         }
         observeMessages()
-        
-        
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -96,6 +95,13 @@ class ViewController: UIViewController {
 // MARK:- UILayouts
 extension ViewController {
     
+//    private func tableViewBackgroundColor() {
+//        tableView.backgroundColor = UIColor.lightPinkish
+//    }
+    
+//    private func backgroundAttributes() {
+//        view.backgroundColor = UIColor.lightPinkish
+//    }
     
     private func setupNavbar() {
         navigationController?.navigationBar.barTintColor = UIColor.darkPinkish
@@ -103,9 +109,7 @@ extension ViewController {
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor:UIColor.lightBlue1]
     }
     
-    private func backgroundAttributes() {
-        view.backgroundColor = UIColor.lightPinkish
-    }
+
     
 }
 // MARK:- Logout functionality
@@ -191,30 +195,21 @@ extension ViewController:UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let message = messages[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CustomMessage", for: indexPath) as! CustomMessageCell
+       
         if let toId = message.toId {
-            
             convertToUserObj(toId: toId) { (user) in
                 if ((user) != nil) {
-                    cell.textLabel?.text = user?.username
-                } else {
-                    cell.textLabel?.text = "No name available"
+                    cell.userObj = user
                 }
             }
-            
         }
-        
-        
-        
-        cell.detailTextLabel?.text = message.text
         return cell
     }
     
-    
-   
-    
-    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
+    }
     
 }
 // MARK:- Firebase functionality
