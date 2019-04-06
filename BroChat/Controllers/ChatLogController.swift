@@ -12,10 +12,12 @@ import FirebaseDatabase
 
 class ChatLogController: UIViewController {
     
+    let dummyDataArray = ["Infiniti M35", "Infiniti Q 56", "BMW i8", "BMW X1"]
+    
     @IBOutlet weak var sendButtonOutlet: UIButton!
     @IBOutlet weak var sendTextFieldOutlet: UITextField!
     @IBOutlet weak var sendView: UIView!
-    
+    @IBOutlet weak var collectionView: UICollectionView!
     
     var user:User? {
         didSet {
@@ -30,12 +32,12 @@ class ChatLogController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        navigationItem.title = "Chat Log"
         setupSendButton()
         setupSendTextField()
         sendView.backgroundColor = UIColor.customDarkBlue
         subscribeToKeyboardNotifications()
-        
+        collectionView.collectionViewLayout = setupFlowLayout()
+        setCollectionViewDelegateDataSource()
     }
     
     @IBAction func sendButtonAction(_ sender: Any) {
@@ -47,6 +49,8 @@ class ChatLogController: UIViewController {
     deinit {
         unsubscribeToKeyboardNotifications()
     }
+    
+    
     
 
 }
@@ -184,4 +188,36 @@ extension ChatLogController {
         
     }
     
+}
+// MARK:- CollectionViewDelegate and functionality
+extension ChatLogController: UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return dummyDataArray.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionCell", for: indexPath)
+        
+        return cell
+    }
+    
+    
+    private func setCollectionViewDelegateDataSource() {
+        collectionView.delegate = self
+        collectionView.dataSource = self
+    }
+    
+    private func setupFlowLayout() -> UICollectionViewFlowLayout {
+        
+        let layout = UICollectionViewFlowLayout()
+        let space:CGFloat = 3.0
+        let dimension = ((view.frame.size.width - 10) - (2 * space)) / 3.0
+        layout.minimumLineSpacing = space
+        layout.minimumInteritemSpacing = space
+        layout.itemSize = CGSize(width: dimension, height: dimension)
+        
+        return layout
+    }
 }

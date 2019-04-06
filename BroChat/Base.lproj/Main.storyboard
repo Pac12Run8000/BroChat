@@ -265,16 +265,42 @@
                                     <constraint firstAttribute="bottom" secondItem="Puw-BY-Y3D" secondAttribute="bottom" constant="5" id="wfK-rG-3UQ"/>
                                 </constraints>
                             </view>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="F7m-ZB-Jd5">
+                                <rect key="frame" x="5" y="69" width="365" height="548"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="c6Y-63-Hti">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="collectionCell" id="xeI-0i-nPe">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </view>
+                                        <color key="backgroundColor" red="1" green="0.76887007200000002" blue="0.74726461340000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="36t-zk-Tin" firstAttribute="leading" secondItem="aic-HQ-czm" secondAttribute="leading" id="ByH-bA-MhN"/>
+                            <constraint firstItem="36t-zk-Tin" firstAttribute="top" secondItem="F7m-ZB-Jd5" secondAttribute="bottom" id="Qqp-Qr-bPC"/>
+                            <constraint firstItem="F7m-ZB-Jd5" firstAttribute="leading" secondItem="aic-HQ-czm" secondAttribute="leading" constant="5" id="Ubj-3X-Sdg"/>
                             <constraint firstItem="aic-HQ-czm" firstAttribute="bottom" secondItem="36t-zk-Tin" secondAttribute="bottom" id="kxM-NP-pyw"/>
                             <constraint firstItem="aic-HQ-czm" firstAttribute="trailing" secondItem="36t-zk-Tin" secondAttribute="trailing" id="mSu-Yi-bN5"/>
+                            <constraint firstItem="F7m-ZB-Jd5" firstAttribute="top" secondItem="aic-HQ-czm" secondAttribute="top" constant="5" id="paX-u6-0qe"/>
+                            <constraint firstItem="aic-HQ-czm" firstAttribute="trailing" secondItem="F7m-ZB-Jd5" secondAttribute="trailing" constant="5" id="yWf-0U-gqp"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="aic-HQ-czm"/>
                     </view>
                     <connections>
+                        <outlet property="collectionView" destination="F7m-ZB-Jd5" id="X4f-jO-u7R"/>
                         <outlet property="sendButtonOutlet" destination="2vU-8E-eZ5" id="Qzn-BK-i1c"/>
                         <outlet property="sendTextFieldOutlet" destination="Puw-BY-Y3D" id="zdp-kp-Gfb"/>
                         <outlet property="sendView" destination="36t-zk-Tin" id="hRy-PD-8RO"/>

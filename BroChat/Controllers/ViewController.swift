@@ -227,20 +227,8 @@ extension ViewController:UITableViewDelegate, UITableViewDataSource {
             self.chatUser = user
             self.chatUser?.id = myChatPartnerId
             
-//            print("id:\(self.chatUser?.username)")
             self.performSegue(withIdentifier: "segueChatLog", sender: self)
         }
-//        guard let myChatUserId = messages[indexPath.row].chatPartnerId() else {
-//            print("Problem getting the chatUser")
-//            return
-//        }
-//
-//        convertToUserObj(toId: myChatUserId) { (user) in
-//            self.chatUser = user
-//            self.performSegue(withIdentifier: "segueChatLog", sender: self)
-//        }
-       
-//        print("chatUser:\(myChatUserId), currentUser:\(currentUser?.username)")
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
