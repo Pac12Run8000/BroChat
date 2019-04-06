@@ -196,9 +196,16 @@ extension ViewController:UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let message = messages[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "CustomMessage", for: indexPath) as! CustomMessageCell
+        
+        var chatPartnerId:String?
+        if message.fromId == Auth.auth().currentUser?.uid {
+            chatPartnerId = message.toId
+        } else {
+            chatPartnerId = message.fromId
+        }
        
-        if let toId = message.toId {
-            convertToUserObj(toId: toId) { (user) in
+        if let id = chatPartnerId {
+            convertToUserObj(toId: id) { (user) in
                 if ((user) != nil) {
                     cell.userObj = user
                 }
