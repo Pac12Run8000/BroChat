@@ -12,6 +12,7 @@ import FirebaseDatabase
 
 class ViewController: UIViewController {
     
+    var chatUser:User?
     var currentUser:User?
     @IBOutlet weak var tableView: UITableView!
     var messages = [Message]()
@@ -35,8 +36,7 @@ class ViewController: UIViewController {
                 })
             }
         }
-//        observeMessages()
-//        observeUserMessages()
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -49,7 +49,9 @@ class ViewController: UIViewController {
                 self.getCurrentUserDictionary(handler: { (succeed, dictionary) in
                     
                     if let dictionary = dictionary {
-                        self.navigationItem.title = dictionary["username"] as? String
+                        self.currentUser = User.convertToUserObject(dictionary: dictionary)
+                        self.navigationItem.title = self.currentUser?.username
+
                     } else {
                         print("There was an error getting dictionary")
                     }
@@ -81,7 +83,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func chatButtonAction(_ sender: Any) {
-        currentUser = nil
+        chatUser = nil
         performSegue(withIdentifier: "segueChatLog", sender: self)
     }
     
@@ -157,8 +159,8 @@ extension ViewController {
 extension ViewController:NewMessagesControllerDelegate {
     func dismissNewMessagePresentChatlog(_ controller: NewMessageViewController, user:User) {
         
-        currentUser = user
-        
+        chatUser = user
+        print("currentUser:\(String(describing: chatUser?.username))")
         
         dismiss(animated: true) {
             self.performSegue(withIdentifier: "segueChatLog", sender: self)
@@ -179,7 +181,7 @@ extension ViewController {
         
         if (segue.identifier == "segueChatLog") {
             let controller = segue.destination as? ChatLogController
-            controller?.user = currentUser
+            controller?.user = chatUser
 
         }
     }
@@ -197,14 +199,9 @@ extension ViewController:UITableViewDelegate, UITableViewDataSource {
         let message = messages[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "CustomMessage", for: indexPath) as! CustomMessageCell
         
-        var chatPartnerId:String?
-        if message.fromId == Auth.auth().currentUser?.uid {
-            chatPartnerId = message.toId
-        } else {
-            chatPartnerId = message.fromId
-        }
        
-        if let id = chatPartnerId {
+       
+        if let id = message.chatPartnerId() {
             convertToUserObj(toId: id) { (user) in
                 if ((user) != nil) {
                     cell.userObj = user
@@ -214,6 +211,10 @@ extension ViewController:UITableViewDelegate, UITableViewDataSource {
         
         cell.messageObj = message
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("\(chatUser)")
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -239,7 +240,7 @@ extension ViewController {
             let messagesReference = Database.database().reference().child("messages").child(messageId)
             messagesReference.observeSingleEvent(of: .value, with: { (snapshot) in
                 
-                print(snapshot)
+//                print(snapshot)
                 if let dictionary = snapshot.value as? [String:AnyObject] {
                     var message = Message()
                     message = Message.returnMessageObject(dictionary: dictionary)
