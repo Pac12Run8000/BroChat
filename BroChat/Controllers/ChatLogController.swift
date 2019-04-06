@@ -132,6 +132,8 @@ extension ChatLogController {
         
     }
 }
+
+
 // MARK:- Firebase functionality
 extension ChatLogController {
     
@@ -154,7 +156,10 @@ extension ChatLogController {
         let ref = Database.database().reference().child("messages")
         let childRef = ref.childByAutoId()
         
-        let toId = user?.id
+        guard let toId = user?.id else {
+            print("There is a problem getting the toId")
+            return
+        }
         let values = ["text": sendText, "toId": toId, "fromId": fromId, "timestamp": timestamp] as [String : Any]
 
         childRef.updateChildValues(values) { (error, ref) in
@@ -171,7 +176,8 @@ extension ChatLogController {
             }
             
             userMessageRef.updateChildValues(value)
-            
+            let recipientUserMessageRef = Database.database().reference().child("user-messages").child(toId)
+            recipientUserMessageRef.updateChildValues(value)
         }
         sendTextFieldOutlet.text = ""
         

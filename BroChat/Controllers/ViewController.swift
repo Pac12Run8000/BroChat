@@ -35,8 +35,8 @@ class ViewController: UIViewController {
                 })
             }
         }
-        observeMessages()
-
+//        observeMessages()
+//        observeUserMessages()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -58,7 +58,7 @@ class ViewController: UIViewController {
             }
         }
         
-        
+         observeUserMessages()
     }
     
    
@@ -216,6 +216,50 @@ extension ViewController:UITableViewDelegate, UITableViewDataSource {
 }
 // MARK:- Firebase functionality
 extension ViewController {
+    
+    private func observeUserMessages() {
+        messages.removeAll()
+        messagesDictionary.removeAll()
+        tableView.reloadData()
+       
+        guard let uid = Auth.auth().currentUser?.uid else {
+            print("There is no id!")
+            return
+        }
+        let ref = Database.database().reference().child("user-messages").child(uid)
+        ref.observe(.childAdded, with: { (snapshot) in
+            let messageId = snapshot.key
+            let messagesReference = Database.database().reference().child("messages").child(messageId)
+            messagesReference.observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                print(snapshot)
+                if let dictionary = snapshot.value as? [String:AnyObject] {
+                    var message = Message()
+                    message = Message.returnMessageObject(dictionary: dictionary)
+                    //                self.messages.append(message)
+                    
+                    if let toId = message.toId {
+                        self.messagesDictionary[toId] = message
+                        self.messages = Array(self.messagesDictionary.values)
+                        
+                        self.messages.sort(by: { (msg1, msg2) -> Bool in
+                            if let timestamp1 = msg1.timestamp?.intValue, let timestanmp2 = msg2.timestamp?.intValue {
+                                return timestamp1 > timestanmp2
+                            }
+                            return false
+                        })
+                    }
+                    
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                    }
+                    
+                }
+                
+            }, withCancel: nil)
+        }, withCancel: nil)
+        
+    }
     
     private func observeMessages() {
         let ref = Database.database().reference().child("messages")
