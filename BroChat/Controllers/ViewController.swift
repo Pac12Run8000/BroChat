@@ -160,8 +160,6 @@ extension ViewController:NewMessagesControllerDelegate {
     func dismissNewMessagePresentChatlog(_ controller: NewMessageViewController, user:User) {
         
         chatUser = user
-        print("currentUser:\(String(describing: chatUser?.username))")
-        
         dismiss(animated: true) {
             self.performSegue(withIdentifier: "segueChatLog", sender: self)
         }
@@ -214,7 +212,35 @@ extension ViewController:UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("\(chatUser)")
+        
+        guard let message = messages[indexPath.row] as? Message else {
+            print("There was a problem getting the message.")
+            return
+        }
+        
+        guard let myChatPartnerId = message.chatPartnerId() else {
+            print("There was a problem with the ChatPartnerId")
+            return
+        }
+        
+        convertToUserObj(toId: myChatPartnerId) { (user) in
+            self.chatUser = user
+            self.chatUser?.id = myChatPartnerId
+            
+//            print("id:\(self.chatUser?.username)")
+            self.performSegue(withIdentifier: "segueChatLog", sender: self)
+        }
+//        guard let myChatUserId = messages[indexPath.row].chatPartnerId() else {
+//            print("Problem getting the chatUser")
+//            return
+//        }
+//
+//        convertToUserObj(toId: myChatUserId) { (user) in
+//            self.chatUser = user
+//            self.performSegue(withIdentifier: "segueChatLog", sender: self)
+//        }
+       
+//        print("chatUser:\(myChatUserId), currentUser:\(currentUser?.username)")
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -306,6 +332,7 @@ extension ViewController {
         ref.observeSingleEvent(of: .value, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String:AnyObject] {
                 completionHandler(User.convertToUserObject(dictionary: dictionary))
+                
             } else {
                 completionHandler(nil)
             }
