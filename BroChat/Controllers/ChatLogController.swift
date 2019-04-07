@@ -12,7 +12,8 @@ import FirebaseDatabase
 
 class ChatLogController: UIViewController {
     
-    let dummyDataArray = ["Infiniti M35", "Infiniti Q 56", "BMW i8", "BMW X1"]
+    
+    var messages = [Message]()
     
     @IBOutlet weak var sendButtonOutlet: UIButton!
     @IBOutlet weak var sendTextFieldOutlet: UITextField!
@@ -23,11 +24,41 @@ class ChatLogController: UIViewController {
         didSet {
             if let username = user?.username {
                 navigationItem.title = "\(username)"
+                observeMessages()
             }
         }
         
     }
     
+    private func observeMessages() {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            print("Error occurred getting uid")
+            return
+        }
+        
+        let userMessageRef = Database.database().reference().child("user-messages").child(uid)
+        userMessageRef.observe(.childAdded, with: { (snapshot) in
+//            print(snapshot)
+            let messageId = snapshot.key
+            let messagesRef = Database.database().reference().child("messages").child(messageId)
+            messagesRef.observe(.value, with: { (snapshot) in
+                
+                guard let dictionary = snapshot.value as? [String:AnyObject] else {
+                    print("Error creating dictionary")
+                    return
+                }
+                
+                var message = Message()
+                message = Message.returnMessageObject(dictionary: dictionary)
+                self.messages.append(message)
+                
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
+                
+            }, withCancel: nil)
+        }, withCancel: nil)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,7 +67,6 @@ class ChatLogController: UIViewController {
         setupSendTextField()
         sendView.backgroundColor = UIColor.customDarkBlue
         subscribeToKeyboardNotifications()
-        collectionView.collectionViewLayout = setupFlowLayout()
         setCollectionViewDelegateDataSource()
     }
     
@@ -193,7 +223,7 @@ extension ChatLogController {
 extension ChatLogController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dummyDataArray.count
+        return messages.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -208,16 +238,12 @@ extension ChatLogController: UICollectionViewDelegate, UICollectionViewDataSourc
         collectionView.delegate = self
         collectionView.dataSource = self
     }
+}
+
+// MARK:- CollectionViewFlowLayout
+extension ChatLogController: UICollectionViewDelegateFlowLayout {
     
-    private func setupFlowLayout() -> UICollectionViewFlowLayout {
-        
-        let layout = UICollectionViewFlowLayout()
-        let space:CGFloat = 3.0
-        let dimension = ((view.frame.size.width - 10) - (2 * space)) / 3.0
-        layout.minimumLineSpacing = space
-        layout.minimumInteritemSpacing = space
-        layout.itemSize = CGSize(width: dimension, height: dimension)
-        
-        return layout
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: view.frame.width, height: 80)
     }
 }
