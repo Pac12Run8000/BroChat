@@ -234,7 +234,7 @@ extension ChatLogController: UICollectionViewDelegate, UICollectionViewDataSourc
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let message = messages[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionCell", for: indexPath) as? ChatMessageCell
-        cell?.chatLabel.text = message.text
+        cell?.textView.text = message.text
         
         return cell!
     }

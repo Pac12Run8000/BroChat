@@ -10,5 +10,16 @@ import UIKit
 
 class ChatMessageCell: UICollectionViewCell {
     
-    @IBOutlet weak var chatLabel: UILabel!
+   
+    @IBOutlet weak var textView: UITextView!
+    
+    
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        textView.backgroundColor = UIColor.lightBlue1
+        
+        
+    }
 }

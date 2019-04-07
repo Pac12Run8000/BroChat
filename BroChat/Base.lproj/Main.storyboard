@@ -282,23 +282,22 @@
                                             <rect key="frame" x="0.0" y="0.0" width="131" height="95"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hmL-Rf-edC">
-                                                    <rect key="frame" x="8" y="28" width="115" height="59"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ecG-4F-sgY">
+                                                    <rect key="frame" x="120" y="0.0" width="11" height="95"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                </textView>
                                             </subviews>
                                         </view>
-                                        <color key="backgroundColor" red="1" green="0.76887007200000002" blue="0.74726461340000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstItem="hmL-Rf-edC" firstAttribute="top" secondItem="xeI-0i-nPe" secondAttribute="topMargin" id="CmS-Ay-uUw"/>
-                                            <constraint firstItem="hmL-Rf-edC" firstAttribute="leading" secondItem="xeI-0i-nPe" secondAttribute="leadingMargin" id="FDy-e7-7Kk"/>
-                                            <constraint firstAttribute="trailingMargin" secondItem="hmL-Rf-edC" secondAttribute="trailing" id="PhN-2C-Yud"/>
-                                            <constraint firstAttribute="bottomMargin" secondItem="hmL-Rf-edC" secondAttribute="bottom" id="RPb-kK-8yV"/>
+                                            <constraint firstItem="ecG-4F-sgY" firstAttribute="leading" secondItem="xeI-0i-nPe" secondAttribute="leading" constant="120" id="Cak-4y-jCL"/>
+                                            <constraint firstAttribute="trailing" secondItem="ecG-4F-sgY" secondAttribute="trailing" id="Ce2-pE-FZk"/>
+                                            <constraint firstAttribute="bottom" secondItem="ecG-4F-sgY" secondAttribute="bottom" id="K2m-nY-Xjz"/>
+                                            <constraint firstItem="ecG-4F-sgY" firstAttribute="top" secondItem="xeI-0i-nPe" secondAttribute="top" id="xIz-fg-ari"/>
                                         </constraints>
                                         <connections>
-                                            <outlet property="chatLabel" destination="hmL-Rf-edC" id="L4K-vT-ga9"/>
+                                            <outlet property="textView" destination="ecG-4F-sgY" id="cCt-nI-Lx5"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
