@@ -9,11 +9,11 @@
 import UIKit
 
 class ChatMessageCell: UICollectionViewCell {
-    
    
     @IBOutlet weak var textView: UITextView!
     
-    
+    @IBOutlet weak var leadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var trailingConstraint: NSLayoutConstraint!
     
     override func awakeFromNib() {
         super.awakeFromNib()

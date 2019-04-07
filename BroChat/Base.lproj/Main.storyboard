@@ -282,7 +282,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="131" height="95"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ecG-4F-sgY">
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ecG-4F-sgY">
                                                     <rect key="frame" x="120" y="0.0" width="11" height="95"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -290,6 +290,7 @@
                                                 </textView>
                                             </subviews>
                                         </view>
+                                        <color key="backgroundColor" red="0.71764705880000002" green="0.84313725490000002" blue="0.84705882349999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstItem="ecG-4F-sgY" firstAttribute="leading" secondItem="xeI-0i-nPe" secondAttribute="leading" constant="120" id="Cak-4y-jCL"/>
                                             <constraint firstAttribute="trailing" secondItem="ecG-4F-sgY" secondAttribute="trailing" id="Ce2-pE-FZk"/>
@@ -297,7 +298,9 @@
                                             <constraint firstItem="ecG-4F-sgY" firstAttribute="top" secondItem="xeI-0i-nPe" secondAttribute="top" id="xIz-fg-ari"/>
                                         </constraints>
                                         <connections>
+                                            <outlet property="leadingConstraint" destination="Cak-4y-jCL" id="WTB-0U-F9M"/>
                                             <outlet property="textView" destination="ecG-4F-sgY" id="cCt-nI-Lx5"/>
+                                            <outlet property="trailingConstraint" destination="Ce2-pE-FZk" id="4rn-hE-naa"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>

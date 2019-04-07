@@ -250,7 +250,20 @@ extension ChatLogController: UICollectionViewDelegate, UICollectionViewDataSourc
 extension ChatLogController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: 80)
+        
+        var height:CGFloat! 
+        if let text = messages[indexPath.row].text {
+            height = estimateFrameFortext(text: text).height + 40
+        }
+        
+        return CGSize(width: view.frame.width, height: height)
+    }
+    
+    private func estimateFrameFortext(text:String) -> CGRect {
+        let size = CGSize(width: 200, height: 1000)
+        let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
+        
+        return NSString(string: text).boundingRect(with: size, options: options, attributes: nil, context: nil)
     }
 }
 
