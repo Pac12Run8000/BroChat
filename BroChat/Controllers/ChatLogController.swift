@@ -30,35 +30,7 @@ class ChatLogController: UIViewController {
         
     }
     
-    private func observeMessages() {
-        guard let uid = Auth.auth().currentUser?.uid else {
-            print("Error occurred getting uid")
-            return
-        }
-        
-        let userMessageRef = Database.database().reference().child("user-messages").child(uid)
-        userMessageRef.observe(.childAdded, with: { (snapshot) in
-//            print(snapshot)
-            let messageId = snapshot.key
-            let messagesRef = Database.database().reference().child("messages").child(messageId)
-            messagesRef.observe(.value, with: { (snapshot) in
-                
-                guard let dictionary = snapshot.value as? [String:AnyObject] else {
-                    print("Error creating dictionary")
-                    return
-                }
-                
-                var message = Message()
-                message = Message.returnMessageObject(dictionary: dictionary)
-                self.messages.append(message)
-                
-                DispatchQueue.main.async {
-                    self.collectionView.reloadData()
-                }
-                
-            }, withCancel: nil)
-        }, withCancel: nil)
-    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -218,6 +190,39 @@ extension ChatLogController {
         
     }
     
+    
+    private func observeMessages() {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            print("Error occurred getting uid")
+            return
+        }
+        
+        let userMessageRef = Database.database().reference().child("user-messages").child(uid)
+        userMessageRef.observe(.childAdded, with: { (snapshot) in
+            //            print(snapshot)
+            let messageId = snapshot.key
+            let messagesRef = Database.database().reference().child("messages").child(messageId)
+            messagesRef.observe(.value, with: { (snapshot) in
+                
+                guard let dictionary = snapshot.value as? [String:AnyObject] else {
+                    print("Error creating dictionary")
+                    return
+                }
+                
+                var message = Message()
+                message = Message.returnMessageObject(dictionary: dictionary)
+                
+                if message.chatPartnerId() == self.user?.id {
+                    self.messages.append(message)
+                    DispatchQueue.main.async {
+                        self.collectionView.reloadData()
+                    }
+                }
+                
+            }, withCancel: nil)
+        }, withCancel: nil)
+    }
+    
 }
 // MARK:- CollectionViewDelegate and functionality
 extension ChatLogController: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -227,10 +232,11 @@ extension ChatLogController: UICollectionViewDelegate, UICollectionViewDataSourc
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let message = messages[indexPath.row]
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionCell", for: indexPath) as? ChatMessageCell
+        cell?.chatLabel.text = message.text
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionCell", for: indexPath)
-        
-        return cell
+        return cell!
     }
     
     
@@ -247,3 +253,5 @@ extension ChatLogController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: view.frame.width, height: 80)
     }
 }
+
+

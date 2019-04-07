@@ -266,23 +266,40 @@
                                 </constraints>
                             </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="F7m-ZB-Jd5">
-                                <rect key="frame" x="5" y="69" width="365" height="548"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="553"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="c6Y-63-Hti">
-                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="itemSize" width="131" height="95"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="collectionCell" id="xeI-0i-nPe">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="collectionCell" id="xeI-0i-nPe" customClass="ChatMessageCell" customModule="BroChat" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="131" height="95"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
-                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="131" height="95"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hmL-Rf-edC">
+                                                    <rect key="frame" x="8" y="28" width="115" height="59"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
                                         </view>
                                         <color key="backgroundColor" red="1" green="0.76887007200000002" blue="0.74726461340000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstItem="hmL-Rf-edC" firstAttribute="top" secondItem="xeI-0i-nPe" secondAttribute="topMargin" id="CmS-Ay-uUw"/>
+                                            <constraint firstItem="hmL-Rf-edC" firstAttribute="leading" secondItem="xeI-0i-nPe" secondAttribute="leadingMargin" id="FDy-e7-7Kk"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="hmL-Rf-edC" secondAttribute="trailing" id="PhN-2C-Yud"/>
+                                            <constraint firstAttribute="bottomMargin" secondItem="hmL-Rf-edC" secondAttribute="bottom" id="RPb-kK-8yV"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="chatLabel" destination="hmL-Rf-edC" id="L4K-vT-ga9"/>
+                                        </connections>
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
@@ -291,11 +308,11 @@
                         <constraints>
                             <constraint firstItem="36t-zk-Tin" firstAttribute="leading" secondItem="aic-HQ-czm" secondAttribute="leading" id="ByH-bA-MhN"/>
                             <constraint firstItem="36t-zk-Tin" firstAttribute="top" secondItem="F7m-ZB-Jd5" secondAttribute="bottom" id="Qqp-Qr-bPC"/>
-                            <constraint firstItem="F7m-ZB-Jd5" firstAttribute="leading" secondItem="aic-HQ-czm" secondAttribute="leading" constant="5" id="Ubj-3X-Sdg"/>
+                            <constraint firstItem="F7m-ZB-Jd5" firstAttribute="leading" secondItem="aic-HQ-czm" secondAttribute="leading" id="Ubj-3X-Sdg"/>
                             <constraint firstItem="aic-HQ-czm" firstAttribute="bottom" secondItem="36t-zk-Tin" secondAttribute="bottom" id="kxM-NP-pyw"/>
                             <constraint firstItem="aic-HQ-czm" firstAttribute="trailing" secondItem="36t-zk-Tin" secondAttribute="trailing" id="mSu-Yi-bN5"/>
-                            <constraint firstItem="F7m-ZB-Jd5" firstAttribute="top" secondItem="aic-HQ-czm" secondAttribute="top" constant="5" id="paX-u6-0qe"/>
-                            <constraint firstItem="aic-HQ-czm" firstAttribute="trailing" secondItem="F7m-ZB-Jd5" secondAttribute="trailing" constant="5" id="yWf-0U-gqp"/>
+                            <constraint firstItem="F7m-ZB-Jd5" firstAttribute="top" secondItem="aic-HQ-czm" secondAttribute="top" id="paX-u6-0qe"/>
+                            <constraint firstItem="aic-HQ-czm" firstAttribute="trailing" secondItem="F7m-ZB-Jd5" secondAttribute="trailing" id="yWf-0U-gqp"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="aic-HQ-czm"/>
                     </view>
@@ -308,7 +325,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="clP-cu-KZY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1158" y="330"/>
+            <point key="canvasLocation" x="1157.5999999999999" y="329.68515742128938"/>
         </scene>
         <!--Main-->
         <scene sceneID="tne-QT-ifu">
