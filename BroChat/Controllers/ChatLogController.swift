@@ -47,6 +47,7 @@ class ChatLogController: UIViewController {
     
     @IBAction func sendButtonAction(_ sender: Any) {
         sendMessageData()
+        
     }
     
     
@@ -89,7 +90,7 @@ extension ChatLogController {
     
     
 }
-
+// MARK:- UITextFieldDelegate functionality
 extension ChatLogController: UITextFieldDelegate {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -98,6 +99,7 @@ extension ChatLogController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         sendMessageData()
+        
         return true
     }
 }

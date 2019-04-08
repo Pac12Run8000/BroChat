@@ -19,10 +19,15 @@ class ChatMessageCell: UICollectionViewCell {
         didSet {
             textView.text = messageObj.text
             
+            
             if messageObj.fromId == Auth.auth().currentUser?.uid {
                 textView.backgroundColor = UIColor.lightBlue1
+                leadingConstraint.constant = 120
+                trailingConstraint.constant = 0
             } else {
                 textView.backgroundColor = UIColor.lightPinkish
+                leadingConstraint.constant = 0
+                trailingConstraint.constant = 120
             }
         }
     }
@@ -32,7 +37,7 @@ class ChatMessageCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+        backgroundColor = UIColor.white
         textView.backgroundColor = UIColor.lightBlue1
         
         textView.layer.cornerRadius = 14
