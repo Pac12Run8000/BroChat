@@ -264,7 +264,7 @@ extension ChatLogController: UICollectionViewDelegateFlowLayout {
         
         var height:CGFloat! 
         if let text = messages[indexPath.row].text {
-            height = estimateFrameFortext(text: text).height + 40
+            height = estimateFrameFortext(text: text).height + 25
         }
         
         return CGSize(width: view.frame.width, height: height)

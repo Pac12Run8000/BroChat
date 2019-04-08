@@ -23,10 +23,10 @@ class ChatMessageCell: UICollectionViewCell {
             if messageObj.fromId == Auth.auth().currentUser?.uid {
                 textView.backgroundColor = UIColor.lightBlue1
                 leadingConstraint.constant = 120
-                trailingConstraint.constant = 0
+                trailingConstraint.constant = 5
             } else {
                 textView.backgroundColor = UIColor.lightPinkish
-                leadingConstraint.constant = 0
+                leadingConstraint.constant = 5
                 trailingConstraint.constant = 120
             }
         }
