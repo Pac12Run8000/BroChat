@@ -7,13 +7,28 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class ChatMessageCell: UICollectionViewCell {
    
     @IBOutlet weak var textView: UITextView!
-    
     @IBOutlet weak var leadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var trailingConstraint: NSLayoutConstraint!
+    
+    var messageObj:Message! {
+        didSet {
+            textView.text = messageObj.text
+            
+            if messageObj.fromId == Auth.auth().currentUser?.uid {
+                textView.backgroundColor = UIColor.lightBlue1
+            } else {
+                textView.backgroundColor = UIColor.lightPinkish
+            }
+        }
+    }
+    
+    
+
     
     override func awakeFromNib() {
         super.awakeFromNib()

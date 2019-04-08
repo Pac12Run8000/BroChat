@@ -237,12 +237,7 @@ extension ChatLogController: UICollectionViewDelegate, UICollectionViewDataSourc
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let message = messages[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionCell", for: indexPath) as? ChatMessageCell
-        cell?.textView.text = message.text
-        if message.fromId == Auth.auth().currentUser?.uid {
-            cell?.textView.backgroundColor = UIColor.lightBlue1
-        } else {
-            cell?.textView.backgroundColor = UIColor.lightPinkish
-        }
+        cell?.messageObj = message
         return cell!
     }
     
