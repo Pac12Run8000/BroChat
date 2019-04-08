@@ -12,12 +12,13 @@ import FirebaseDatabase
 
 class ViewController: UIViewController {
     
-    var chatUser:User?
-    var currentUser:User?
+   
     @IBOutlet weak var tableView: UITableView!
+    
     var messages = [Message]()
     var messagesDictionary = [String:Message]()
-    
+    var chatUser:User?
+    var currentUser:User?
     
     
     
@@ -36,6 +37,8 @@ class ViewController: UIViewController {
                 })
             }
         }
+        
+        tableView.separatorColor = UIColor.customDarkBlue
 
     }
     
