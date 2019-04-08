@@ -20,6 +20,11 @@ class ChatMessageCell: UICollectionViewCell {
         
         textView.backgroundColor = UIColor.lightBlue1
         
+        textView.layer.cornerRadius = 8
+        textView.layer.masksToBounds = true
+        textView.layer.borderWidth = 2
+        textView.layer.borderColor = UIColor.customDarkBlue.cgColor
+        textView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         
     }
 }
