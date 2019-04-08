@@ -15,6 +15,8 @@ class ChatMessageCell: UICollectionViewCell {
     @IBOutlet weak var leadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var trailingConstraint: NSLayoutConstraint!
     
+    
+    
     var messageObj:Message! {
         didSet {
             textView.text = messageObj.text
@@ -47,4 +49,9 @@ class ChatMessageCell: UICollectionViewCell {
         textView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         
     }
+    
+    
+    
+    
+    
 }

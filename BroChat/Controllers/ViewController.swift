@@ -82,17 +82,21 @@ class ViewController: UIViewController {
         
     }
     
-    @IBAction func chatButtonAction(_ sender: Any) {
-        chatUser = nil
-        performSegue(withIdentifier: "segueChatLog", sender: self)
-    }
+//    @IBAction func chatButtonAction(_ sender: Any) {
+//        chatUser = nil
+//        performSegue(withIdentifier: "segueChatLog", sender: self)
+//    }
     
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
     
-
+    @IBAction func inviteButtonAction(_ sender: Any) {
+        
+        print("Invite !!!")
+    }
+    
 }
 // MARK:- UILayouts
 extension ViewController {

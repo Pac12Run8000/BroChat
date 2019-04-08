@@ -426,9 +426,9 @@
                                     <action selector="newMessageButtonAction:" destination="BYZ-38-t0r" id="J6s-yy-PtF"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem title="Chat" id="dUN-wt-bvp">
+                            <barButtonItem title="Invite" id="uPH-Ft-nEk">
                                 <connections>
-                                    <action selector="chatButtonAction:" destination="BYZ-38-t0r" id="KQy-0q-Mb3"/>
+                                    <action selector="inviteButtonAction:" destination="BYZ-38-t0r" id="SsJ-DS-1mt"/>
                                 </connections>
                             </barButtonItem>
                         </rightBarButtonItems>
