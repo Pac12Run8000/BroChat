@@ -43,7 +43,7 @@ class ChatMessageCell: UICollectionViewCell {
         textView.layer.cornerRadius = 14
         textView.layer.masksToBounds = true
         textView.layer.borderWidth = 2
-        textView.layer.borderColor = UIColor.customDarkBlue.cgColor
+        textView.layer.borderColor = UIColor.lightBlue2.cgColor
         textView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         
     }
