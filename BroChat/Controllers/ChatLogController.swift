@@ -40,6 +40,8 @@ class ChatLogController: UIViewController {
         sendView.backgroundColor = UIColor.customDarkBlue
         subscribeToKeyboardNotifications()
         setCollectionViewDelegateDataSource()
+        
+        collectionView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 50, right: 0)
     }
     
     @IBAction func sendButtonAction(_ sender: Any) {

@@ -260,8 +260,8 @@ extension ViewController {
                     message = Message.returnMessageObject(dictionary: dictionary)
                     //                self.messages.append(message)
                     
-                    if let toId = message.toId {
-                        self.messagesDictionary[toId] = message
+                    if let chatPartnerId = message.chatPartnerId() {
+                        self.messagesDictionary[chatPartnerId] = message
                         self.messages = Array(self.messagesDictionary.values)
                         
                         self.messages.sort(by: { (msg1, msg2) -> Bool in
