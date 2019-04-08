@@ -39,7 +39,7 @@ class ViewController: UIViewController {
         }
         
         tableView.separatorColor = UIColor.customDarkBlue
-
+        tableView.backgroundColor = UIColor.lightBlue2
     }
     
     override func viewWillAppear(_ animated: Bool) {

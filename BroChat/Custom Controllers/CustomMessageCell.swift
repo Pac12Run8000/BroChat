@@ -56,6 +56,7 @@ class CustomMessageCell: UITableViewCell {
         CustomImageView.layer.borderWidth = 3
         CustomImageView.layer.borderColor = UIColor.lightBlue2.cgColor
         CustomImageView.contentMode = .scaleAspectFill
+        backgroundColor = UIColor.lightBlue1
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
