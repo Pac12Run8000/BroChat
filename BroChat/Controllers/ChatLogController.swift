@@ -43,6 +43,7 @@ class ChatLogController: UIViewController {
         
         collectionView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 50, right: 0)
         collectionView.scrollIndicatorInsets = UIEdgeInsets(top: 10, left: 0, bottom: 50, right: 0)
+        setupGestureRecognizerForCollectionView()
     }
     
     @IBAction func sendButtonAction(_ sender: Any) {
@@ -50,13 +51,19 @@ class ChatLogController: UIViewController {
         
     }
     
-    
-    
     deinit {
         unsubscribeToKeyboardNotifications()
     }
     
+    private func setupGestureRecognizerForCollectionView() {
+        collectionView.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.moveKeyboard))
+        collectionView.addGestureRecognizer(tapGesture)
+    }
     
+    @objc func moveKeyboard() {
+        sendTextFieldOutlet.resignFirstResponder()
+    }
     
 
 }
@@ -270,5 +277,13 @@ extension ChatLogController: UICollectionViewDelegateFlowLayout {
         return NSString(string: text).boundingRect(with: size, options: options, attributes: nil, context: nil)
     }
 }
+
+
+
+extension ChatLogController {
+    
+    
+}
+
 
 
