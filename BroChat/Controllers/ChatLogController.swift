@@ -42,6 +42,7 @@ class ChatLogController: UIViewController {
         setCollectionViewDelegateDataSource()
         
         collectionView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 50, right: 0)
+        collectionView.scrollIndicatorInsets = UIEdgeInsets(top: 10, left: 0, bottom: 50, right: 0)
     }
     
     @IBAction func sendButtonAction(_ sender: Any) {
@@ -237,7 +238,11 @@ extension ChatLogController: UICollectionViewDelegate, UICollectionViewDataSourc
         let message = messages[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionCell", for: indexPath) as? ChatMessageCell
         cell?.textView.text = message.text
-        
+        if message.fromId == Auth.auth().currentUser?.uid {
+            cell?.textView.backgroundColor = UIColor.lightBlue1
+        } else {
+            cell?.textView.backgroundColor = UIColor.lightPinkish
+        }
         return cell!
     }
     
