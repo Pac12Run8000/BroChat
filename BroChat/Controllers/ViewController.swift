@@ -97,7 +97,14 @@ class ViewController: UIViewController {
     }
     
     @IBAction func inviteButtonAction(_ sender: Any) {
-        
+        composeInviteEmail()
+    }
+    
+}
+// MARK:- Mail Composing functionality
+extension ViewController:MFMailComposeViewControllerDelegate {
+    
+    private func composeInviteEmail() {
         guard MFMailComposeViewController.canSendMail() else {
             print("Cannot send mail.")
             return
@@ -108,14 +115,10 @@ class ViewController: UIViewController {
             print("There is no username value.")
             return
         }
+        
         let myString = "You've been invited by \(username) to join the conversation on BroChat.\nFollow this link and you can get more information about this iOS application.\n Go here: https://grovertechsupport.wordpress.com"
         let myAttribute = [ NSAttributedString.Key.foregroundColor: UIColor.blue ]
-        var myAttrString = NSAttributedString(string: myString, attributes: myAttribute).string
-        
-       
-
-       
-        
+        let myAttrString = NSAttributedString(string: myString, attributes: myAttribute).string
         
         let composer = MFMailComposeViewController()
         composer.mailComposeDelegate = self
@@ -123,12 +126,7 @@ class ViewController: UIViewController {
         composer.setSubject("Signup with BroChat")
         composer.setMessageBody(myAttrString, isHTML: false)
         present(composer, animated: true, completion: nil)
-
     }
-    
-}
-// MARK:- Mail Composing functionality
-extension ViewController:MFMailComposeViewControllerDelegate {
     
     
     
