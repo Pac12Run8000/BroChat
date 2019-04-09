@@ -9,6 +9,7 @@
 import UIKit
 import FirebaseAuth
 import FirebaseDatabase
+import MessageUI
 
 class ViewController: UIViewController {
     
@@ -97,10 +98,65 @@ class ViewController: UIViewController {
     
     @IBAction func inviteButtonAction(_ sender: Any) {
         
-        print("Invite !!!")
+        guard MFMailComposeViewController.canSendMail() else {
+            print("Cannot send mail.")
+            return
+        }
+        
+        // create attributed string
+        guard let username = currentUser?.username else {
+            print("There is no username value.")
+            return
+        }
+        let myString = "You've been invited by \(username) to join the conversation on BroChat.\nFollow this link and you can get more information about this iOS application.\n Go here: https://grovertechsupport.wordpress.com"
+        let myAttribute = [ NSAttributedString.Key.foregroundColor: UIColor.blue ]
+        var myAttrString = NSAttributedString(string: myString, attributes: myAttribute).string
+        
+       
+
+       
+        
+        
+        let composer = MFMailComposeViewController()
+        composer.mailComposeDelegate = self
+        composer.setToRecipients(nil)
+        composer.setSubject("Signup with BroChat")
+        composer.setMessageBody(myAttrString, isHTML: false)
+        present(composer, animated: true, completion: nil)
+
     }
     
 }
+// MARK:- Mail Composing functionality
+extension ViewController:MFMailComposeViewControllerDelegate {
+    
+    
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        
+        if let _ = error {
+            print("Error:\(String(describing: error?.localizedDescription))")
+            controller.dismiss(animated: true, completion: nil)
+            return
+        }
+        
+        switch result {
+        case .cancelled:
+            print("cancelled")
+        case .failed:
+            print("failed")
+        case .saved:
+            print("saved")
+        case .sent:
+            print("sent")
+        }
+        
+        controller.dismiss(animated: true , completion: nil)
+    }
+}
+
+
+
 // MARK:- UILayouts
 extension ViewController {
     
