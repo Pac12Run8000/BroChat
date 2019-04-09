@@ -344,35 +344,35 @@ extension ViewController {
         
     }
     
-    private func observeMessages() {
-        let ref = Database.database().reference().child("messages")
-        ref.observe(.childAdded, with: { (snapshot) in
-            
-            if let dictionary = snapshot.value as? [String:AnyObject] {
-                var message = Message()
-                message = Message.returnMessageObject(dictionary: dictionary)
-//                self.messages.append(message)
-                
-                if let toId = message.toId {
-                    self.messagesDictionary[toId] = message
-                    self.messages = Array(self.messagesDictionary.values)
-                    
-                    self.messages.sort(by: { (msg1, msg2) -> Bool in
-                        if let timestamp1 = msg1.timestamp?.intValue, let timestanmp2 = msg2.timestamp?.intValue {
-                                return timestamp1 > timestanmp2
-                        }
-                        return false
-                    })
-                }
-                
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
-                
-            }
-           
-        }, withCancel: nil)
-    }
+//    private func observeMessages() {
+//        let ref = Database.database().reference().child("messages")
+//        ref.observe(.childAdded, with: { (snapshot) in
+//            
+//            if let dictionary = snapshot.value as? [String:AnyObject] {
+//                var message = Message()
+//                message = Message.returnMessageObject(dictionary: dictionary)
+////                self.messages.append(message)
+//                
+//                if let toId = message.toId {
+//                    self.messagesDictionary[toId] = message
+//                    self.messages = Array(self.messagesDictionary.values)
+//                    
+//                    self.messages.sort(by: { (msg1, msg2) -> Bool in
+//                        if let timestamp1 = msg1.timestamp?.intValue, let timestanmp2 = msg2.timestamp?.intValue {
+//                                return timestamp1 > timestanmp2
+//                        }
+//                        return false
+//                    })
+//                }
+//                
+//                DispatchQueue.main.async {
+//                    self.tableView.reloadData()
+//                }
+//                
+//            }
+//           
+//        }, withCancel: nil)
+//    }
     
     
     private func convertToUserObj(toId:String, completionHandler:@escaping(_ user:User?) -> ()) {
