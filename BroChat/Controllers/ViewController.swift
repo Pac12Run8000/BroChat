@@ -20,6 +20,7 @@ class ViewController: UIViewController {
     var messagesDictionary = [String:Message]()
     var chatUser:User?
     var currentUser:User?
+    var timer:Timer?
     
     
     
@@ -333,15 +334,21 @@ extension ViewController {
                         })
                     }
                     
-                    DispatchQueue.main.async {
-                        self.tableView.reloadData()
-                    }
-                    
+                    self.timer?.invalidate()
+                    self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.reloadTable), userInfo: nil, repeats: false)
                 }
                 
             }, withCancel: nil)
         }, withCancel: nil)
         
+    }
+    
+    
+    
+    @objc func reloadTable() {
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
     
 //    private func observeMessages() {
