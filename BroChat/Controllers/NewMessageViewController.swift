@@ -152,10 +152,7 @@ extension NewMessageViewController {
     @objc func callReloadOfTable() {
         
         self.users.sort { (user1, user2) -> Bool in
-            if let username1 = user1.username, let username2 = user2.username {
-                return username1 < username2
-            }
-            return false
+                return user1 < user2
         }
         DispatchQueue.main.async {
             self.tableView.reloadData()

@@ -8,7 +8,9 @@
 
 import Foundation
 
-class User:NSObject {
+class User:NSObject, Comparable {
+    
+    
     var id:String?
     var email:String?
     var username:String?
@@ -22,4 +24,14 @@ class User:NSObject {
         user.profileImageUrl = dictionary["profileImageUrl"] as? String
         return user
     }
+    
+    static func < (lhs: User, rhs: User) -> Bool {
+        if let lhsUser = lhs.username, let rhsUser = rhs.username {
+            return lhsUser < rhsUser
+        }
+        return false
+    }
 }
+
+
+
