@@ -31,6 +31,13 @@ class User:NSObject, Comparable {
         }
         return false
     }
+    
+    static func == (lhs: User, rhs: User) -> Bool {
+        if let lhsUser = lhs.username, let rhsUser = rhs.username {
+            return lhsUser == rhsUser
+        }
+        return false
+    }
 }
 
 
