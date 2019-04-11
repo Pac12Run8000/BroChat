@@ -335,7 +335,7 @@ extension ViewController {
                     }
                     
                     self.timer?.invalidate()
-                    self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.reloadTable), userInfo: nil, repeats: false)
+                    self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.reloadTable), userInfo: nil, repeats: false)
                 }
                 
             }, withCancel: nil)

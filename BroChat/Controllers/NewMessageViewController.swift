@@ -20,6 +20,7 @@ class NewMessageViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     
+    var timer:Timer?
     var ref:DatabaseReference?
     var users = [User]()
     var databaseHandle:DatabaseHandle?
@@ -138,13 +139,27 @@ extension NewMessageViewController {
             myUser.email = user["email"] as? String
             myUser.profileImageUrl = user["profileImageUrl"] as? String
             self.users.append(myUser)
-
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
+            
+            timer?.invalidate()
+            timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.callReloadOfTable), userInfo: nil, repeats: false)
+            
+           
 
         }
         
+    }
+    
+    @objc func callReloadOfTable() {
+        
+        self.users.sort { (user1, user2) -> Bool in
+            if let username1 = user1.username, let username2 = user2.username {
+                return username1 < username2
+            }
+            return false
+        }
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
     
 }
