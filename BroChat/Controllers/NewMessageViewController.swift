@@ -17,7 +17,7 @@ protocol NewMessagesControllerDelegate:class {
 
 class NewMessageViewController: UIViewController {
     
-    
+    @IBOutlet weak var searchBarOutlet: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     
     var timer:Timer?
@@ -31,6 +31,13 @@ class NewMessageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        searchBarOutlet.tintColor = UIColor.white
+        
+        searchBarOutlet.delegate = self
+
+        
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -46,7 +53,7 @@ class NewMessageViewController: UIViewController {
         tableView.separatorColor = UIColor.customDarkBlue
     }
     
-    
+   
     
     
     @IBAction func cancelButtonAction(_ sender: Any) {
@@ -160,3 +167,28 @@ extension NewMessageViewController {
     }
     
 }
+
+extension NewMessageViewController: UISearchBarDelegate {
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBarOutlet.resignFirstResponder()
+    }
+    
+//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+//        print("\(searchText)")
+//
+//        users = users.filter({ (user) -> Bool in
+//            if let username = user.username {
+//                return username.prefix(searchText.count) == searchText
+//            }
+//            return false
+//        })
+//        
+//        DispatchQueue.main.async {
+//            self.tableView.reloadData()
+//        }
+//    }
+    
+}
+
+
