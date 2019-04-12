@@ -149,8 +149,6 @@ extension NewMessageViewController {
             
             timer?.invalidate()
             timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.callReloadOfTable), userInfo: nil, repeats: false)
-            
-           
 
         }
         
@@ -184,18 +182,20 @@ extension NewMessageViewController: UISearchBarDelegate {
     
     private func setFilteredUsersReloadTableView(searchText:String) {
         
-        if let searchText = searchText as? String, searchText.isEmpty, searchText == "" {
+        if let searchText = searchText as? String, searchText.isEmpty {
             filteredUsers = users
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
         } else {
+            
             filteredUsers = users.filter({ (user) -> Bool in
                 if let username = user.username {
-                    return username.prefix(searchText.count) == searchText
+                    return username.prefix(searchText.trimmingCharacters(in: .whitespaces).count) == searchText.trimmingCharacters(in: .whitespaces)
                 }
                 return false
             })
+            
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
