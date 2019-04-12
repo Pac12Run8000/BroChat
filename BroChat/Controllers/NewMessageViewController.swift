@@ -23,6 +23,7 @@ class NewMessageViewController: UIViewController {
     var timer:Timer?
     var ref:DatabaseReference?
     var users = [User]()
+    var filteredUsers = [User]()
     var databaseHandle:DatabaseHandle?
     
     var messagesController:ViewController?
@@ -31,9 +32,6 @@ class NewMessageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-        searchBarOutlet.tintColor = UIColor.white
         
         searchBarOutlet.delegate = self
 
@@ -51,6 +49,8 @@ class NewMessageViewController: UIViewController {
         })
         
         tableView.separatorColor = UIColor.customDarkBlue
+        
+        
     }
     
    
@@ -70,12 +70,12 @@ extension NewMessageViewController:UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return users.count
+        return filteredUsers.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let user = users[indexPath.row]
+        let user = filteredUsers[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? CustomCell
         
         
@@ -101,9 +101,9 @@ extension NewMessageViewController:UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let currenUser = users[indexPath.row]
+        let currentUser = filteredUsers[indexPath.row]
         
-        newMessagesControllerDelegate?.dismissNewMessagePresentChatlog(self, user: currenUser)
+        newMessagesControllerDelegate?.dismissNewMessagePresentChatlog(self, user: currentUser)
 
     }
     
@@ -161,34 +161,45 @@ extension NewMessageViewController {
         self.users.sort { (user1, user2) -> Bool in
                 return user1 < user2
         }
+        
+        filteredUsers = users
+        
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
     }
     
 }
-
+// MARK:- Searchbar filtering functionality
 extension NewMessageViewController: UISearchBarDelegate {
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBarOutlet.resignFirstResponder()
     }
     
-//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        print("\(searchText)")
-//
-//        users = users.filter({ (user) -> Bool in
-//            if let username = user.username {
-//                return username.prefix(searchText.count) == searchText
-//            }
-//            return false
-//        })
-//        
-//        DispatchQueue.main.async {
-//            self.tableView.reloadData()
-//        }
-//    }
     
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        setFilteredUsersReloadTableView(searchText: searchText)
+    }
+    
+    private func setFilteredUsersReloadTableView(searchText:String) {
+        if let searchText = searchText as? String, searchText.isEmpty {
+            filteredUsers = users
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        } else {
+            filteredUsers = users.filter({ (user) -> Bool in
+                if let username = user.username {
+                    return username.prefix(searchText.count) == searchText
+                }
+                return false
+            })
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+    }
 }
 
 
