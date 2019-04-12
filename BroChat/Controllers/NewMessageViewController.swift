@@ -183,7 +183,8 @@ extension NewMessageViewController: UISearchBarDelegate {
     }
     
     private func setFilteredUsersReloadTableView(searchText:String) {
-        if let searchText = searchText as? String, searchText.isEmpty {
+        
+        if let searchText = searchText as? String, searchText.isEmpty, searchText == "" {
             filteredUsers = users
             DispatchQueue.main.async {
                 self.tableView.reloadData()
