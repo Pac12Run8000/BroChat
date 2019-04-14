@@ -346,13 +346,16 @@ extension ViewController {
                         return false
                     })
                 }
-
-                self.timer?.invalidate()
-                self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.reloadTable), userInfo: nil, repeats: false)
+                    self.attemptReloadOfTable()
             }
 
         }, withCancel: nil)
         
+    }
+    
+    private func attemptReloadOfTable() {
+        self.timer?.invalidate()
+        self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.reloadTable), userInfo: nil, repeats: false)
     }
     
     
