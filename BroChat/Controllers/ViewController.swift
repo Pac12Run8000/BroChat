@@ -312,33 +312,45 @@ extension ViewController {
         }
         let ref = Database.database().reference().child("user-messages").child(uid)
         ref.observe(.childAdded, with: { (snapshot) in
-            let messageId = snapshot.key
-            let messagesReference = Database.database().reference().child("messages").child(messageId)
-            messagesReference.observeSingleEvent(of: .value, with: { (snapshot) in
-                
-//                print(snapshot)
-                if let dictionary = snapshot.value as? [String:AnyObject] {
-                    var message = Message()
-                    message = Message.returnMessageObject(dictionary: dictionary)
-                    //                self.messages.append(message)
-                    
-                    if let chatPartnerId = message.chatPartnerId() {
-                        self.messagesDictionary[chatPartnerId] = message
-                        self.messages = Array(self.messagesDictionary.values)
-                        
-                        self.messages.sort(by: { (msg1, msg2) -> Bool in
-                            if let timestamp1 = msg1.timestamp?.intValue, let timestanmp2 = msg2.timestamp?.intValue {
-                                return timestamp1 > timestanmp2
-                            }
-                            return false
-                        })
-                    }
-                    
-                    self.timer?.invalidate()
-                    self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.reloadTable), userInfo: nil, repeats: false)
-                }
+            let userId = snapshot.key
+            
+            Database.database().reference().child("user-messages").child(uid).child(userId).observe(.childAdded, with: { (snapshot) in
+               
+                let messageId = snapshot.key
+                self.getMessageObjectsForTableView(messageId: messageId)
                 
             }, withCancel: nil)
+
+        }, withCancel: nil)
+        
+    }
+    
+    private func getMessageObjectsForTableView(messageId:String) {
+        let messagesReference = Database.database().reference().child("messages").child(messageId)
+        messagesReference.observeSingleEvent(of: .value, with: { (snapshot) in
+
+//                print(snapshot)
+            if let dictionary = snapshot.value as? [String:AnyObject] {
+                var message = Message()
+                message = Message.returnMessageObject(dictionary: dictionary)
+                //                self.messages.append(message)
+
+                if let chatPartnerId = message.chatPartnerId() {
+                    self.messagesDictionary[chatPartnerId] = message
+                    self.messages = Array(self.messagesDictionary.values)
+
+                    self.messages.sort(by: { (msg1, msg2) -> Bool in
+                        if let timestamp1 = msg1.timestamp?.intValue, let timestanmp2 = msg2.timestamp?.intValue {
+                            return timestamp1 > timestanmp2
+                        }
+                        return false
+                    })
+                }
+
+                self.timer?.invalidate()
+                self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.reloadTable), userInfo: nil, repeats: false)
+            }
+
         }, withCancel: nil)
         
     }
@@ -351,36 +363,7 @@ extension ViewController {
         }
     }
     
-//    private func observeMessages() {
-//        let ref = Database.database().reference().child("messages")
-//        ref.observe(.childAdded, with: { (snapshot) in
-//            
-//            if let dictionary = snapshot.value as? [String:AnyObject] {
-//                var message = Message()
-//                message = Message.returnMessageObject(dictionary: dictionary)
-////                self.messages.append(message)
-//                
-//                if let toId = message.toId {
-//                    self.messagesDictionary[toId] = message
-//                    self.messages = Array(self.messagesDictionary.values)
-//                    
-//                    self.messages.sort(by: { (msg1, msg2) -> Bool in
-//                        if let timestamp1 = msg1.timestamp?.intValue, let timestanmp2 = msg2.timestamp?.intValue {
-//                                return timestamp1 > timestanmp2
-//                        }
-//                        return false
-//                    })
-//                }
-//                
-//                DispatchQueue.main.async {
-//                    self.tableView.reloadData()
-//                }
-//                
-//            }
-//           
-//        }, withCancel: nil)
-//    }
-    
+
     
     private func convertToUserObj(toId:String, completionHandler:@escaping(_ user:User?) -> ()) {
         

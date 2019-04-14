@@ -186,7 +186,7 @@ extension ChatLogController {
                 return
             }
             
-            let userMessageRef = Database.database().reference().child("user-messages").child(fromId)
+            let userMessageRef = Database.database().reference().child("user-messages").child(fromId).child(toId)
             
             guard let messageId = childRef.key, let value = [messageId:1] as? [String:Int] else {
                 print("There was an error getting the values")
@@ -194,7 +194,7 @@ extension ChatLogController {
             }
             
             userMessageRef.updateChildValues(value)
-            let recipientUserMessageRef = Database.database().reference().child("user-messages").child(toId)
+            let recipientUserMessageRef = Database.database().reference().child("user-messages").child(toId).child(fromId)
             recipientUserMessageRef.updateChildValues(value)
         }
         sendTextFieldOutlet.text = ""
@@ -204,12 +204,13 @@ extension ChatLogController {
     
     
     private func observeMessages() {
-        guard let uid = Auth.auth().currentUser?.uid else {
+        
+        guard let uid = Auth.auth().currentUser?.uid, let toId = user?.id else {
             print("Error occurred getting uid")
             return
         }
         
-        let userMessageRef = Database.database().reference().child("user-messages").child(uid)
+        let userMessageRef = Database.database().reference().child("user-messages").child(uid).child(toId)
         userMessageRef.observe(.childAdded, with: { (snapshot) in
             //            print(snapshot)
             let messageId = snapshot.key
@@ -223,7 +224,7 @@ extension ChatLogController {
                 
                 var message = Message()
                 message = Message.returnMessageObject(dictionary: dictionary)
-                
+               
                 if message.chatPartnerId() == self.user?.id {
                     self.messages.append(message)
                     DispatchQueue.main.async {
