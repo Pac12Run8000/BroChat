@@ -319,6 +319,7 @@ extension ViewController:UITableViewDelegate, UITableViewDataSource {
                 print("There was an error removing the data.")
                 return
             }
+            
             self.messages.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
