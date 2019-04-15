@@ -42,6 +42,7 @@ class ViewController: UIViewController {
         
         tableView.separatorColor = UIColor.customDarkBlue
         tableView.backgroundColor = UIColor.lightBlue2
+        tableView.allowsMultipleSelectionDuringEditing = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -296,6 +297,34 @@ extension ViewController:UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 120
     }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        
+        guard let chatPartnerId = messages[indexPath.row].chatPartnerId() as? String else {
+            print("There was no chatPartnerId")
+            return
+        }
+        
+        Database.database().reference().child("user-messages").child(uid).child(chatPartnerId).removeValue { (error, reference) in
+            if (error != nil) {
+                print("There was an error removing the data.")
+                return
+            }
+            self.messages.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+    }
+    
+    
     
 }
 // MARK:- Firebase functionality
