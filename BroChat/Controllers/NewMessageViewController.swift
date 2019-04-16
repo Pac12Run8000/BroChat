@@ -8,6 +8,7 @@
 
 import UIKit
 import FirebaseDatabase
+import FirebaseAuth
 
 
 
@@ -138,15 +139,15 @@ extension NewMessageViewController {
     
     private func processSnapShot(mySnapshot:DataSnapshot) {
         
-        if let user = mySnapshot.value as? [String:AnyObject] {
-
-            let myUser = User()
-            myUser.id = mySnapshot.key
-            myUser.username = user["username"] as? String
-            myUser.email = user["email"] as? String
-            myUser.profileImageUrl = user["profileImageUrl"] as? String
-            self.users.append(myUser)
-            
+        if let user = mySnapshot.value as? [String:AnyObject], mySnapshot.key != Auth.auth().currentUser?.uid {
+           
+            let chatUser = User()
+            chatUser.id = mySnapshot.key
+            chatUser.username = user["username"] as? String
+            chatUser.email = user["email"] as? String
+            chatUser.profileImageUrl = user["profileImageUrl"] as? String
+            self.users.append(chatUser)
+        
             timer?.invalidate()
             timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.callReloadOfTable), userInfo: nil, repeats: false)
 

@@ -25,6 +25,7 @@ class User:NSObject, Comparable {
         return user
     }
     
+    
     static func < (lhs: User, rhs: User) -> Bool {
         if let lhsUser = lhs.username, let rhsUser = rhs.username {
             return lhsUser < rhsUser
@@ -33,10 +34,7 @@ class User:NSObject, Comparable {
     }
     
     static func == (lhs: User, rhs: User) -> Bool {
-        if let lhsUser = lhs.username, let rhsUser = rhs.username {
-            return lhsUser == rhsUser
-        }
-        return false
+        return lhs.username == rhs.username && lhs.id == rhs.id
     }
 }
 
