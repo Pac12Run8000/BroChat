@@ -27,6 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		090751D72267EE360054988E /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		09403DBA22452E1E000ADA51 /* BroChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BroChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		09403DBD22452E1E000ADA51 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		09403DC222452E1E000ADA51 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -93,6 +94,7 @@
 				09403DC622452E20000ADA51 /* LaunchScreen.storyboard */,
 				09403DD922488C72000ADA51 /* GoogleService-Info.plist */,
 				09403DC922452E20000ADA51 /* Info.plist */,
+				090751D72267EE360054988E /* README.md */,
 			);
 			path = BroChat;
 			sourceTree = "<group>";
