@@ -119,7 +119,7 @@ extension ViewController:MFMailComposeViewControllerDelegate {
             return
         }
         
-        let myString = "You've been invited by \(username) to join the conversation on BroChat.\nFollow this link and you can get more information about this iOS application.\n Go here: https://grovertechsupport.wordpress.com"
+        let myString = "You've been invited by \(username) to join the conversation on BroChat.\nFollow this link and you can get more information about this iOS application for download.\n Go here: https://grovertechsupport.wordpress.com/2019/04/18/brochat/" //grovertechsupport.wordpress.com/2019/04/18/brochat/
         let myAttribute = [ NSAttributedString.Key.foregroundColor: UIColor.blue ]
         let myAttrString = NSAttributedString(string: myString, attributes: myAttribute).string
         
